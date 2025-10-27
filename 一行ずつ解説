@@ -1,0 +1,582 @@
+"""
+===============================================
+社員管理システム - 一行ずつ完全解説版
+===============================================
+
+このファイルは、すべてのコードに詳細なコメントを付けています。
+各行が何をしているか理解できるようになっています。
+"""
+
+
+# ===============================================
+# ファイル1: employee.py
+# ===============================================
+
+# 【1行目】三重クォートで囲まれた文字列 = Docstring（ドキュメント文字列）
+# ファイルの説明を書く（pydocでHTML生成時に使われる）
+"""
+employee.py
+社員基底クラスモジュール
+"""
+
+
+# 【3行目】class キーワードでクラスを定義
+# Employee = クラス名（大文字始まりが慣例）
+# : でクラスの中身が始まる
+class Employee:
+    # 【4行目】クラスのDocstring
+    # このクラスが何をするものか説明
+    """
+    社員の基底クラス
+    
+    すべての社員タイプの基本となるクラスです。
+    名前と給料の情報を管理します。
+    
+    Attributes:
+        _name (str): 社員の名前
+        _salary (int): 社員の給料
+    """
+    
+    # 【5行目】特殊メソッド __init__ の定義
+    # __init__ = コンストラクタ（オブジェクト作成時に自動実行される）
+    # self = 自分自身を指す（必須の第一引数）
+    def __init__(self):
+        # 【6行目】メソッドのDocstring
+        """Employeeクラスのコンストラクタ"""
+        
+        # 【7行目】インスタンス変数 _name を空文字で初期化
+        # self._name = 「このインスタンスの _name という変数」
+        # : str = 型ヒント（この変数は文字列型）
+        # "" = 空文字（初期値）
+        # _ で始まる = プライベート変数（外から直接触らない）
+        self._name: str = ""
+        
+        # 【8行目】インスタンス変数 _salary を0で初期化
+        # : int = 整数型の型ヒント
+        # 0 = 初期値
+        self._salary: int = 0
+    
+    # 【9行目】get_name メソッドの定義
+    # self = 必須の第一引数
+    # -> str = 戻り値の型ヒント（文字列を返す）
+    def get_name(self) -> str:
+        # 【10行目】メソッドのDocstring
+        """
+        社員の名前を取得する
+        
+        Returns:
+            str: 社員の名前
+        """
+        # 【11行目】return = 値を返す
+        # self._name = このインスタンスの _name 変数の値
+        return self._name
+    
+    # 【12行目】set_name メソッドの定義
+    # emp_name: str = 引数名: 型（文字列型の引数）
+    # -> None = 何も返さない
+    def set_name(self, emp_name: str) -> None:
+        # 【13行目】Docstring（引数の説明も書く）
+        """
+        社員の名前を設定する
+        
+        Args:
+            emp_name (str): 設定する社員の名前
+        """
+        # 【14行目】代入
+        # self._name に emp_name の値を代入
+        # = の右側の値を左側に入れる
+        self._name = emp_name
+    
+    # 【15行目】get_salary メソッドの定義
+    # -> int = 整数を返す
+    def get_salary(self) -> int:
+        """
+        社員の給料を取得する
+        
+        Returns:
+            int: 社員の給料
+        """
+        # 【16行目】給料を返す
+        return self._salary
+    
+    # 【17行目】set_salary メソッドの定義
+    # emp_salary: int = 整数型の引数
+    def set_salary(self, emp_salary: int) -> None:
+        """
+        社員の給料を設定する
+        
+        Args:
+            emp_salary (int): 設定する給料
+        """
+        # 【18行目】給料を設定
+        self._salary = emp_salary
+    
+    # 【19行目】特殊メソッド __del__ の定義
+    # __del__ = デストラクタ（オブジェクト削除時に自動実行）
+    def __del__(self):
+        """デストラクタ - インスタンスが削除されるときに呼ばれる"""
+        
+        # 【20行目】f-string（フォーマット文字列）
+        # f"..." = 文字列の中に {変数} を埋め込める
+        # {self._name} = この位置に _name の値が入る
+        print(f"[デストラクタ] Employeeインスタンス '{self._name}' が削除されました")
+
+
+# ===============================================
+# ファイル2: staff.py
+# ===============================================
+
+"""
+staff.py
+スタッフクラスモジュール
+"""
+
+# 【1行目】インポート文
+# from モジュール名 import クラス名
+# employee.py から Employee クラスをインポート
+from employee import Employee
+
+
+# 【2行目】クラス定義（継承）
+# class 子クラス名(親クラス名):
+# Staff は Employee を継承する
+class Staff(Employee):
+    """
+    一般社員クラス
+    
+    Employeeクラスを継承し、所属部署の情報を追加します。
+    
+    Attributes:
+        _division (str): 所属部署
+    """
+    
+    # 【3行目】コンストラクタ
+    def __init__(self):
+        """Staffクラスのコンストラクタ"""
+        
+        # 【4行目】super() = 親クラスを指す
+        # super().__init__() = 親のコンストラクタを呼ぶ
+        # これで _name と _salary が初期化される
+        # ※ super().__init__() を忘れると親の初期化がされない！
+        super().__init__()
+        
+        # 【5行目】Staff 独自の変数を追加
+        # _division = 所属部署
+        self._division: str = ""
+    
+    # 【6行目】get_division メソッド
+    # Staff だけが持つメソッド
+    def get_division(self) -> str:
+        """
+        所属部署を取得する
+        
+        Returns:
+            str: 所属部署名
+        """
+        # 【7行目】部署名を返す
+        return self._division
+    
+    # 【8行目】set_division メソッド
+    def set_division(self, emp_division: str) -> None:
+        """
+        所属部署を設定する
+        
+        Args:
+            emp_division (str): 設定する部署名
+        """
+        # 【9行目】部署名を設定
+        self._division = emp_division
+    
+    # 【10行目】デストラクタ（オーバーライド）
+    # 親の __del__ を上書き
+    def __del__(self):
+        """デストラクタ - インスタンスが削除されるときに呼ばれる"""
+        # 【11行目】Staff用のメッセージを表示
+        print(f"[デストラクタ] Staffインスタンス '{self._name}' が削除されました")
+
+
+# ===============================================
+# ファイル3: president.py
+# ===============================================
+
+"""
+president.py
+社長クラスモジュール
+"""
+
+# 【1行目】employee.py から Employee をインポート
+from employee import Employee
+
+# 【2行目】型チェック用のインポート
+# typing モジュールから TYPE_CHECKING をインポート
+from typing import TYPE_CHECKING
+
+# 【3〜4行目】型チェック時のみインポート
+# if TYPE_CHECKING: = 型チェック時のみ実行
+# これで循環インポートを回避できる
+if TYPE_CHECKING:
+    # company.py から Company をインポート（型ヒント用）
+    from company import Company
+
+
+# 【5行目】President クラスの定義（Employee を継承）
+class President(Employee):
+    """
+    社長クラス
+    
+    Employeeクラスを継承し、会社への参照を持ちます。
+    get_name()メソッドをオーバーライドして「社長」の肩書きを追加します。
+    
+    Attributes:
+        _company (Company): 所属する会社のインスタンス
+    """
+    
+    # 【6行目】コンストラクタ
+    # company: 'Company' = 引数（文字列で型指定）
+    # 'Company' = クォートで囲むと、後で定義されるクラスも使える
+    def __init__(self, company: 'Company'):
+        """
+        Presidentクラスのコンストラクタ
+        
+        Args:
+            company (Company): 所属する会社のインスタンス
+        """
+        # 【7行目】親のコンストラクタを呼ぶ
+        super().__init__()
+        
+        # 【8行目】会社への参照を保存
+        # self._company = 引数の company を保存
+        # これで President から Company にアクセスできる
+        self._company: 'Company' = company
+    
+    # 【9行目】get_name メソッド（オーバーライド）
+    # 親の get_name() と同じ名前 = オーバーライド（上書き）
+    def get_name(self) -> str:
+        """
+        社長の名前を取得する（オーバーライド）
+        
+        名前の末尾に「社長」の肩書きを追加します。
+        
+        Returns:
+            str: 「社長」の肩書き付きの名前
+        """
+        # 【10行目】文字列の連結
+        # self._name + "社長" = 名前に「社長」を追加
+        # 例: "太郎" + "社長" = "太郎社長"
+        return self._name + "社長"
+    
+    # 【11行目】dismiss メソッド（解雇処理）
+    # name: str = 解雇する社員の名前
+    def dismiss(self, name: str) -> None:
+        """
+        指定された名前の社員を解雇する
+        
+        Args:
+            name (str): 解雇する社員の名前
+        """
+        # 【12〜15行目】リスト内包表記
+        # [式 for 変数 in リスト if 条件]
+        # 新しいリスト = [各要素 for 各要素 in 元のリスト if 条件]
+        self._company._staffs = [
+            # staff = リストの各要素
+            staff 
+            # for staff in self._company._staffs = 会社の全社員について
+            for staff in self._company._staffs 
+            # if staff.get_name() != name = 名前が一致しない人だけ残す
+            if staff.get_name() != name
+        ]
+        # つまり: 指定された名前以外の社員だけの新しいリストを作る
+        
+        # 【16行目】解雇メッセージを表示
+        print(f"[解雇通知] {name}さんを解雇しました")
+    
+    # 【17行目】デストラクタ
+    def __del__(self):
+        """デストラクタ - インスタンスが削除されるときに呼ばれる"""
+        print(f"[デストラクタ] Presidentインスタンス '{self._name}' が削除されました")
+
+
+# ===============================================
+# ファイル4: company.py
+# ===============================================
+
+"""
+company.py
+会社クラスモジュール
+"""
+
+# 【1行目】型ヒント用のインポート
+# typing モジュールから List をインポート
+# List[型] = 「型のリスト」という意味
+from typing import List
+
+# 【2行目】デコレータ用のインポート
+# functools モジュールから wraps をインポート
+# @wraps は元の関数の情報を保持するため
+from functools import wraps
+
+# 【3〜4行目】他のクラスをインポート
+from staff import Staff
+from president import President
+
+
+# 【5行目】デコレータ関数の定義
+# def 関数名(func): = 関数を引数に取る関数
+def print_employee_count(func):
+    """
+    社員数を表示するデコレータ
+    
+    メソッド実行後に現在の社員数（社長含む）を表示します。
+    
+    Args:
+        func: デコレートする関数
+        
+    Returns:
+        ラップされた関数
+    """
+    # 【6行目】@wraps(func) = 元の関数情報を保持
+    # これがないと、元の関数名などが失われる
+    @wraps(func)
+    # 【7行目】wrapper 関数の定義
+    # *args = 任意個の位置引数
+    # **kwargs = 任意個のキーワード引数
+    def wrapper(self, *args, **kwargs):
+        # 【8行目】元の関数を実行
+        # func(self, *args, **kwargs) = 受け取った引数をそのまま渡す
+        # result = 元の関数の戻り値
+        result = func(self, *args, **kwargs)
+        
+        # 【9行目】社員数を計算
+        # len(self._staffs) = 社員の数
+        # + 1 = 社長を加える
+        total_employees = len(self._staffs) + 1
+        
+        # 【10行目】メッセージを表示
+        print(f"現在わが社の社員数は{total_employees}人になっています")
+        
+        # 【11行目】元の関数の戻り値を返す
+        return result
+    
+    # 【12行目】wrapper 関数を返す
+    # これでデコレータが完成
+    return wrapper
+
+
+# 【13行目】Company クラスの定義
+class Company:
+    """
+    会社クラス
+    
+    社員（Staff）と社長（President）を管理します。
+    
+    Attributes:
+        _staffs (List[Staff]): 社員のリスト
+        _ceo (President): 社長
+    """
+    
+    # 【14行目】コンストラクタ
+    def __init__(self):
+        """Companyクラスのコンストラクタ"""
+        
+        # 【15行目】社員リストを空リストで初期化
+        # List[Staff] = Staff型のリスト
+        # [] = 空のリスト
+        self._staffs: List[Staff] = []
+        
+        # 【16行目】社長を作成
+        # President(self) = この会社(self)を渡して社長を作る
+        self._ceo: President = President(self)
+    
+    # 【17行目】@property デコレータ
+    # プロパティ = メソッドを変数のように使える
+    @property
+    # 【18行目】staffs プロパティの定義
+    def staffs(self) -> List[Staff]:
+        """
+        社員リストを取得する（プロパティ）
+        
+        Returns:
+            List[Staff]: 社員のリスト
+        """
+        # 【19行目】社員リストを返す
+        # これで company.staffs で取得できる（()不要）
+        return self._staffs
+    
+    # 【20行目】@property デコレータ
+    @property
+    # 【21行目】ceo プロパティの定義
+    def ceo(self) -> President:
+        """
+        社長を取得する（プロパティ）
+        
+        Returns:
+            President: 社長のインスタンス
+        """
+        # 【22行目】社長を返す
+        return self._ceo
+    
+    # 【23行目】@print_employee_count デコレータを適用
+    # このメソッドの実行後に社員数が表示される
+    @print_employee_count
+    # 【24行目】set_dismissal_procedure メソッドの定義
+    def set_dismissal_procedure(self, name: str) -> None:
+        """
+        解雇手続きを実行する
+        
+        指定された名前の社員を解雇し、現在の社員数を表示します。
+        このメソッドはデコレータにより社員数が自動表示されます。
+        
+        Args:
+            name (str): 解雇する社員の名前
+        """
+        # 【25〜28行目】リスト内包表記で解雇処理
+        # 指定された名前以外の社員だけを残す
+        self._staffs = [
+            staff 
+            for staff in self._staffs 
+            if staff.get_name() != name
+        ]
+        
+        # 【29行目】解雇手続き完了メッセージ
+        print(f"[解雇手続き完了] {name}さんの解雇手続きが完了しました")
+    
+    # 【30行目】デストラクタ
+    def __del__(self):
+        """デストラクタ - インスタンスが削除されるときに呼ばれる"""
+        print("[デストラクタ] Companyインスタンスが削除されました")
+
+
+# ===============================================
+# ファイル5: main.py
+# ===============================================
+
+"""
+main.py
+メインプログラム
+"""
+
+# 【1〜2行目】必要なクラスをインポート
+from company import Company
+from staff import Staff
+
+
+# 【3行目】main 関数の定義
+def main():
+    """
+    メイン関数
+    
+    会社インスタンスを作成し、社員と社長を登録してテストします。
+    """
+    # 【4〜6行目】タイトル表示
+    # "=" * 60 = "="を60回繰り返す
+    print("=" * 60)
+    print("社員管理システム テスト開始")
+    print("=" * 60)
+    # print() = 空行を出力
+    print()
+    
+    # 【7行目】Company インスタンスを作成
+    # company = 変数名
+    # Company() = Companyクラスのインスタンスを作成
+    company = Company()
+    
+    # 【8〜13行目】社員1を作成・設定
+    # Staff() = Staffクラスのインスタンスを作成
+    staff1 = Staff()
+    # set_name() = 名前を設定
+    staff1.set_name("佐藤太郎")
+    # set_salary() = 給料を設定
+    staff1.set_salary(200000)
+    # set_division() = 部署を設定
+    staff1.set_division("営業部")
+    # company.staffs.append() = 社員リストに追加
+    # append() = リストの末尾に要素を追加
+    company.staffs.append(staff1)
+    
+    # 【14〜19行目】社員2を作成・設定
+    staff2 = Staff()
+    staff2.set_name("鈴木次郎")
+    staff2.set_salary(300000)
+    staff2.set_division("開発部")
+    company.staffs.append(staff2)
+    
+    # 【20〜22行目】社長を設定
+    # company.ceo = プロパティで社長にアクセス
+    company.ceo.set_name("偉井杉人")
+    company.ceo.set_salary(2500000)
+    
+    # 【23〜28行目】社員情報を表示
+    print("【社員一覧】")
+    # for 変数 in リスト: = リストの各要素について繰り返す
+    for staff in company.staffs:
+        # f"..." = f-string（変数を埋め込める文字列）
+        # {staff.get_name()} = この位置に名前が入る
+        print(f"名前：{staff.get_name()}、給料：{staff.get_salary()}円、所属：{staff.get_division()}")
+    
+    # 【29〜31行目】社長情報を表示
+    print()
+    print("【社長情報】")
+    print(f"名前：{company.ceo.get_name()}、給料：{company.ceo.get_salary()}円")
+    
+    # 【32〜34行目】区切り線
+    print()
+    print("=" * 60)
+
+
+# 【35〜36行目】プログラムのエントリーポイント
+# if __name__ == "__main__":
+# = このファイルが直接実行された時のみ実行される
+# （インポートされた時は実行されない）
+if __name__ == "__main__":
+    # main() 関数を呼び出す
+    main()
+    # プログラム終了メッセージ
+    print("\n[プログラム終了 - デストラクタが呼ばれます]")
+
+
+# ===============================================
+# 重要な文法のまとめ
+# ===============================================
+
+"""
+【覚えておくべき文法】
+
+1. クラス定義
+   class クラス名:
+       pass
+
+2. 継承
+   class 子(親):
+       pass
+
+3. コンストラクタ
+   def __init__(self):
+       pass
+
+4. メソッド定義
+   def メソッド名(self, 引数):
+       return 値
+
+5. プロパティ
+   @property
+   def プロパティ名(self):
+       return 値
+
+6. デコレータ
+   @デコレータ名
+   def 関数名():
+       pass
+
+7. リスト内包表記
+   [式 for 変数 in リスト if 条件]
+
+8. f-string
+   f"文字列 {変数} 文字列"
+
+9. 型ヒント
+   変数名: 型 = 値
+   def 関数名(引数: 型) -> 戻り値の型:
+
+10. インポート
+    from モジュール import クラス
+"""
