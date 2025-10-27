@@ -1,0 +1,453 @@
+# 📋 社員管理システム 実装チェックシート
+
+## 🎯 このチェックシートの使い方
+
+各項目を実装したら ✅ をつけていきましょう！
+全部チェックできたら、あなたのコードは完璧です！
+
+---
+
+## 📁 ファイル作成チェック
+
+### 基本ファイル（4個）
+- [ ] `employee.py` を作成した
+- [ ] `staff.py` を作成した
+- [ ] `president.py` を作成した
+- [ ] `company.py` を作成した
+
+### テストファイル（5個）
+- [ ] `test_employee.py` を作成した
+- [ ] `test_staff.py` を作成した
+- [ ] `test_president.py` を作成した
+- [ ] `test_company.py` を作成した
+- [ ] `test_integration.py` を作成した
+
+### 実行ファイル（1個）
+- [ ] `run_all_tests.py` を作成した
+
+### 統合版（オプション）
+- [ ] `employee_system_all_in_one.py` を作成した
+
+**✨ 合計：10個（または11個）のファイル**
+
+---
+
+## 🏗️ Employee クラス実装チェック
+
+### 基本構造
+- [ ] `class Employee:` でクラスを定義した
+- [ ] docstring（説明文）を書いた
+- [ ] `__init__()` メソッドを実装した
+- [ ] `self._name` を初期化した（空文字列）
+- [ ] `self._salary` を初期化した（0）
+
+### ゲッター（取得）メソッド
+- [ ] `get_name()` メソッドを実装した
+- [ ] `get_name()` が `self._name` を返す
+- [ ] `get_salary()` メソッドを実装した
+- [ ] `get_salary()` が `self._salary` を返す
+
+### セッター（設定）メソッド
+- [ ] `set_name(emp_name)` メソッドを実装した
+- [ ] `set_name()` が引数を `self._name` に代入する
+- [ ] `set_salary(emp_salary)` メソッドを実装した
+- [ ] `set_salary()` が引数を `self._salary` に代入する
+
+### デストラクタ
+- [ ] `__del__()` メソッドを実装した
+- [ ] デストラクタがメッセージを表示する
+
+### 型ヒント
+- [ ] 変数に型ヒント（`: str`, `: int`）を付けた
+- [ ] メソッドに戻り値の型ヒント（`-> str`, `-> None`）を付けた
+
+---
+
+## 👔 Staff クラス実装チェック
+
+### 継承
+- [ ] `class Staff(Employee):` で Employee を継承した
+- [ ] docstring を書いた
+- [ ] `__init__()` で `super().__init__()` を呼んだ
+
+### 独自の属性
+- [ ] `self._division` を追加した（空文字列で初期化）
+
+### 独自のメソッド
+- [ ] `get_division()` メソッドを実装した
+- [ ] `get_division()` が `self._division` を返す
+- [ ] `set_division(emp_division)` メソッドを実装した
+- [ ] `set_division()` が引数を `self._division` に代入する
+
+### デストラクタ
+- [ ] `__del__()` メソッドをオーバーライドした
+- [ ] "Staffインスタンス" とメッセージに書いた
+
+### 継承の確認
+- [ ] Staff が Employee のメソッド（get_name など）を使える
+- [ ] Staff が Employee の属性（_name など）を持っている
+
+---
+
+## 👑 President クラス実装チェック
+
+### 継承
+- [ ] `class President(Employee):` で Employee を継承した
+- [ ] docstring を書いた
+- [ ] `__init__(self, company)` で引数を受け取る
+- [ ] `super().__init__()` を呼んだ
+
+### 会社への参照
+- [ ] `self._company` に引数の company を保存した
+- [ ] 型ヒント `'Company'` をシングルクォートで囲んだ
+
+### オーバーライド
+- [ ] `get_name()` メソッドをオーバーライドした
+- [ ] `self._name + "社長"` を返すようにした
+
+### 解雇メソッド
+- [ ] `dismiss(name)` メソッドを実装した
+- [ ] リスト内包表記を使った
+- [ ] `self._company._staffs` を更新する
+- [ ] `if staff.get_name() != name` で条件をチェック
+- [ ] 解雇メッセージを表示する
+
+### デストラクタ
+- [ ] `__del__()` メソッドをオーバーライドした
+- [ ] "Presidentインスタンス" とメッセージに書いた
+
+---
+
+## 🏢 Company クラス実装チェック
+
+### デコレータ関数
+- [ ] `print_employee_count(func)` 関数を定義した
+- [ ] `@wraps(func)` を使った
+- [ ] `wrapper(self, *args, **kwargs)` を定義した
+- [ ] `result = func(self, *args, **kwargs)` で元の関数を実行
+- [ ] `len(self._staffs) + 1` で社員数を計算
+- [ ] 社員数を表示するメッセージを出力
+- [ ] `return result` で結果を返す
+- [ ] `return wrapper` でラッパー関数を返す
+
+### 基本構造
+- [ ] `class Company:` でクラスを定義した
+- [ ] docstring を書いた
+- [ ] `__init__()` メソッドを実装した
+
+### 初期化
+- [ ] `self._staffs = []` で空リストを作成
+- [ ] `List[Staff]` の型ヒントを付けた
+- [ ] `self._ceo = President(self)` で社長を作成
+- [ ] 社長に `self`（会社自身）を渡した
+
+### プロパティ
+- [ ] `@property` デコレータを使った
+- [ ] `staffs()` プロパティを実装した
+- [ ] `staffs()` が `self._staffs` を返す
+- [ ] `ceo()` プロパティを実装した
+- [ ] `ceo()` が `self._ceo` を返す
+
+### 解雇手続きメソッド
+- [ ] `@print_employee_count` デコレータを付けた
+- [ ] `set_dismissal_procedure(name)` メソッドを実装した
+- [ ] リスト内包表記で社員をフィルタ
+- [ ] 解雇手続き完了メッセージを表示
+
+### デストラクタ
+- [ ] `__del__()` メソッドを実装した
+- [ ] "Companyインスタンス" とメッセージに書いた
+
+---
+
+## 🧪 test_employee.py テストチェック
+
+### 基本構造
+- [ ] `unittest` をインポートした
+- [ ] `Employee` クラスをインポートした
+- [ ] `class TestEmployee(unittest.TestCase):` を定義した
+
+### setUp メソッド
+- [ ] `setUp()` メソッドを実装した
+- [ ] `self.employee = Employee()` でインスタンスを作成
+
+### テストメソッド
+- [ ] `test_initial_values()` を実装した
+- [ ] `test_set_and_get_name()` を実装した
+- [ ] `test_set_and_get_salary()` を実装した
+- [ ] `test_name_update()` を実装した
+- [ ] `test_salary_update()` を実装した
+
+### アサーション
+- [ ] `self.assertEqual()` を使った
+- [ ] 期待値と実際の値を比較している
+
+### 実行部分
+- [ ] `if __name__ == "__main__":` を書いた
+- [ ] `unittest.main(verbosity=2)` を呼んだ
+
+---
+
+## 🧪 test_staff.py テストチェック
+
+### 基本構造
+- [ ] `unittest` をインポートした
+- [ ] `Employee` と `Staff` をインポートした
+- [ ] `class TestStaff(unittest.TestCase):` を定義した
+
+### setUp メソッド
+- [ ] `setUp()` メソッドを実装した
+- [ ] `self.staff = Staff()` でインスタンスを作成
+
+### テストメソッド
+- [ ] `test_inheritance()` を実装した（継承チェック）
+- [ ] `test_division_initial_value()` を実装した
+- [ ] `test_set_and_get_division()` を実装した
+- [ ] `test_complete_staff_data()` を実装した
+- [ ] `test_division_update()` を実装した
+- [ ] `test_multiple_properties()` を実装した
+
+### 継承テスト
+- [ ] `assertIsInstance()` で継承を確認
+- [ ] `hasattr()` で親のメソッドを確認
+
+---
+
+## 🧪 test_president.py テストチェック
+
+### インポート
+- [ ] `unittest` をインポートした
+- [ ] `sys` と `StringIO` をインポートした
+- [ ] 必要なクラスをすべてインポートした
+
+### setUp メソッド
+- [ ] `self.company = Company()` を作成
+- [ ] `self.president = self.company.ceo` で社長を取得
+
+### テストメソッド
+- [ ] `test_inheritance()` を実装した
+- [ ] `test_name_override()` を実装した（オーバーライド確認）
+- [ ] `test_name_override_empty()` を実装した
+- [ ] `test_company_reference()` を実装した
+- [ ] `test_dismiss_method_single()` を実装した
+- [ ] `test_dismiss_method_multiple()` を実装した
+- [ ] `test_dismiss_nonexistent()` を実装した
+
+### StringIO の使用
+- [ ] `captured_output = StringIO()` を作成
+- [ ] `sys.stdout = captured_output` で出力を切り替え
+- [ ] `sys.stdout = sys.__stdout__` で元に戻す
+
+---
+
+## 🧪 test_company.py テストチェック
+
+### 基本構造
+- [ ] 必要なモジュールをインポートした
+- [ ] `class TestCompany(unittest.TestCase):` を定義した
+
+### setUp メソッド
+- [ ] `self.company = Company()` を作成
+
+### テストメソッド
+- [ ] `test_initial_state()` を実装した
+- [ ] `test_staffs_property()` を実装した
+- [ ] `test_ceo_property()` を実装した
+- [ ] `test_add_staff()` を実装した
+- [ ] `test_add_multiple_staff()` を実装した
+- [ ] `test_multiple_staff_management()` を実装した
+- [ ] `test_set_dismissal_procedure()` を実装した
+- [ ] `test_set_dismissal_procedure_decorator()` を実装した
+- [ ] `test_ceo_configuration()` を実装した
+
+### デコレータテスト
+- [ ] StringIO で出力をキャプチャ
+- [ ] `assertIn()` でメッセージを確認
+- [ ] 社員数が正しく表示されることを確認
+
+---
+
+## 🧪 test_integration.py テストチェック
+
+### 基本構造
+- [ ] 必要なモジュールをインポートした
+- [ ] `class TestIntegration(unittest.TestCase):` を定義した
+
+### テストメソッド
+- [ ] `test_complete_scenario()` を実装した
+- [ ] `test_hire_and_fire_scenario()` を実装した
+- [ ] `test_dismissal_procedure_scenario()` を実装した
+
+### シナリオテスト
+- [ ] 会社作成 → 社員追加 → 解雇の流れを確認
+- [ ] 複数の機能を組み合わせてテスト
+- [ ] 最終状態を検証
+
+---
+
+## 🚀 run_all_tests.py 実装チェック
+
+### 基本構造
+- [ ] `unittest` と `sys` をインポートした
+- [ ] `run_all_tests()` 関数を定義した
+
+### テスト読み込み
+- [ ] `TestLoader()` を作成した
+- [ ] `TestSuite()` を作成した
+- [ ] 各テストファイルを try-except でインポート
+- [ ] `loadTestsFromTestCase()` でテストを追加
+- [ ] 成功/失敗メッセージを表示
+
+### テスト実行
+- [ ] `TextTestRunner(verbosity=2)` を作成
+- [ ] `runner.run(suite)` でテストを実行
+- [ ] 結果を `result` に保存
+
+### 結果表示
+- [ ] 実行テスト数を表示
+- [ ] 成功数を計算して表示
+- [ ] 失敗数を表示
+- [ ] エラー数を表示
+- [ ] `result.wasSuccessful()` で判定
+
+### エントリーポイント
+- [ ] `if __name__ == "__main__":` を書いた
+- [ ] `run_all_tests()` を呼んだ
+- [ ] `sys.exit()` で終了コードを設定
+- [ ] try-except でエラーハンドリング
+
+---
+
+## ✅ 動作確認チェック
+
+### ファイル単体テスト
+- [ ] `python test_employee.py` が成功する
+- [ ] `python test_staff.py` が成功する
+- [ ] `python test_president.py` が成功する
+- [ ] `python test_company.py` が成功する
+- [ ] `python test_integration.py` が成功する
+
+### 全体テスト
+- [ ] `python run_all_tests.py` が成功する
+- [ ] すべてのテストが OK と表示される
+- [ ] エラーや失敗が 0 件
+
+### 統合版テスト（オプション）
+- [ ] `python employee_system_all_in_one.py` が動く
+- [ ] 社員情報が正しく表示される
+- [ ] 解雇機能が動く
+- [ ] デコレータが動く
+- [ ] デストラクタメッセージが表示される
+
+---
+
+## 🎨 コード品質チェック
+
+### コメント・docstring
+- [ ] すべてのクラスに docstring がある
+- [ ] すべてのメソッドに docstring がある
+- [ ] 重要な処理にコメントがある
+
+### 型ヒント
+- [ ] 変数に型ヒント（`: str`, `: int` など）がある
+- [ ] メソッドに引数の型ヒント がある
+- [ ] メソッドに戻り値の型ヒント（`-> str` など）がある
+
+### 命名規則
+- [ ] クラス名は大文字始まり（PascalCase）
+- [ ] メソッド名は小文字+アンダースコア（snake_case）
+- [ ] プライベート変数は `_` で始まる
+
+### インデント・フォーマット
+- [ ] インデントは4スペース（統一されている）
+- [ ] 空行が適切に入っている
+- [ ] 行の長さが長すぎない（目安：80-100文字）
+
+---
+
+## 📊 機能確認チェック
+
+### Employee の機能
+- [ ] 名前の設定・取得ができる
+- [ ] 給料の設定・取得ができる
+- [ ] デストラクタが動く
+
+### Staff の機能
+- [ ] Employee の機能を継承している
+- [ ] 部署の設定・取得ができる
+- [ ] デストラクタが動く
+
+### President の機能
+- [ ] Employee の機能を継承している
+- [ ] 名前に「社長」が付く（オーバーライド）
+- [ ] dismiss() で社員を解雇できる
+- [ ] 会社への参照を持っている
+
+### Company の機能
+- [ ] 社員リストを管理できる
+- [ ] 社長を持っている
+- [ ] プロパティで staffs/ceo にアクセスできる
+- [ ] デコレータが動作する
+- [ ] 解雇手続きができる
+
+---
+
+## 🏆 完成度チェック
+
+### 初級レベル（基本）
+- [ ] 全ファイルが作成できた
+- [ ] エラーなく実行できる
+- [ ] 基本的な動作が確認できた
+
+### 中級レベル（応用）
+- [ ] すべてのテストが成功する
+- [ ] コードの意味を理解している
+- [ ] 型ヒントが適切に付いている
+
+### 上級レベル（完璧）
+- [ ] コメント・docstring が充実している
+- [ ] コードが綺麗に整形されている
+- [ ] 独自の機能を追加できる
+
+---
+
+## 🎯 最終確認
+
+### 必須項目
+- [ ] すべてのファイルが同じフォルダにある
+- [ ] `python run_all_tests.py` で全テストが成功
+- [ ] エラーや警告が出ない
+
+### 推奨項目
+- [ ] README.md を作成した（説明文書）
+- [ ] requirements.txt を作成した（依存関係）
+- [ ] .gitignore を作成した（Git管理）
+
+### 発展項目
+- [ ] 新しい機能を追加した
+- [ ] 自分なりのテストを追加した
+- [ ] リファクタリング（改善）した
+
+---
+
+## 🎉 完成おめでとうございます！
+
+すべてのチェックが完了したら、あなたは：
+- ✅ オブジェクト指向プログラミングを理解した
+- ✅ 継承とオーバーライドを使える
+- ✅ デコレータを理解した
+- ✅ プロパティを使える
+- ✅ ユニットテストを書ける
+- ✅ Python の中級者レベルに到達！
+
+**次のステップ：**
+1. 自分なりの機能を追加してみる
+2. 他のプロジェクトに応用する
+3. GitHub にアップロードして公開する
+
+---
+
+**チェック進捗：[ ] / 合計項目数**
+
+*作成日：2025年*
+*バージョン：1.0*
