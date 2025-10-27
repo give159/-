@@ -1,0 +1,806 @@
+# 📋 実装ワークシート - チェックリスト付き
+
+このワークシートに沿って進めれば、確実に完成します！
+
+---
+
+## 🎯 今日の目標
+
+```
+[ ] Phase 1: Employee完成
+[ ] Phase 2: Staff完成  
+[ ] Phase 3: President完成
+[ ] Phase 4: Company完成
+[ ] Phase 5: main.py完成
+[ ] Phase 6: テスト完了
+```
+
+---
+
+## Phase 1: employee.py 実装
+
+### ステップ1-1: ファイル作成 ⏱️ 5分
+
+```powershell
+notepad employee.py
+```
+
+**チェック項目:**
+- [ ] ファイルを作成した
+- [ ] 保存先を確認した（C:\Users\yukik\desktop\excel）
+
+---
+
+### ステップ1-2: Docstring記述 ⏱️ 2分
+
+```python
+"""
+employee.py
+社員基底クラスモジュール
+"""
+```
+
+**チェック項目:**
+- [ ] 三重クォートで書いた
+- [ ] ファイルの説明を書いた
+
+---
+
+### ステップ1-3: クラス定義 ⏱️ 3分
+
+```python
+class Employee:
+    """
+    社員の基底クラス
+    
+    Attributes:
+        _name (str): 社員の名前
+        _salary (int): 社員の給料
+    """
+    pass  # まず枠だけ作る
+```
+
+**チェック項目:**
+- [ ] `class Employee:` と書いた
+- [ ] インデントは4スペース
+- [ ] Docstringを書いた
+- [ ] `pass` で一旦終了
+
+---
+
+### ステップ1-4: コンストラクタ実装 ⏱️ 5分
+
+```python
+    def __init__(self):
+        """Employeeクラスのコンストラクタ"""
+        self._name: str = ""
+        self._salary: int = 0
+```
+
+**チェック項目:**
+- [ ] `__init__` のスペルが正しい（アンダースコア2つずつ）
+- [ ] `self` を第一引数にした
+- [ ] `_name` と `_salary` を初期化
+- [ ] 型ヒントを付けた
+
+---
+
+### ステップ1-5: get_name実装 ⏱️ 3分
+
+```python
+    def get_name(self) -> str:
+        """
+        社員の名前を取得する
+        
+        Returns:
+            str: 社員の名前
+        """
+        return self._name
+```
+
+**チェック項目:**
+- [ ] `self` を引数に
+- [ ] `-> str` で戻り値の型指定
+- [ ] Docstringを書いた
+- [ ] `return self._name` と書いた
+
+---
+
+### ステップ1-6: set_name実装 ⏱️ 3分
+
+```python
+    def set_name(self, emp_name: str) -> None:
+        """
+        社員の名前を設定する
+        
+        Args:
+            emp_name (str): 設定する社員の名前
+        """
+        self._name = emp_name
+```
+
+**チェック項目:**
+- [ ] 引数 `emp_name: str` を追加
+- [ ] `-> None` を指定（何も返さない）
+- [ ] `self._name = emp_name` と代入
+
+---
+
+### ステップ1-7: get_salary, set_salary実装 ⏱️ 5分
+
+```python
+    def get_salary(self) -> int:
+        """給料を取得"""
+        return self._salary
+    
+    def set_salary(self, emp_salary: int) -> None:
+        """給料を設定"""
+        self._salary = emp_salary
+```
+
+**チェック項目:**
+- [ ] get_salary()を実装
+- [ ] set_salary()を実装
+- [ ] 型ヒントが正しい（int）
+
+---
+
+### ステップ1-8: デストラクタ実装 ⏱️ 3分
+
+```python
+    def __del__(self):
+        """デストラクタ"""
+        print(f"[デストラクタ] Employee '{self._name}' が削除されました")
+```
+
+**チェック項目:**
+- [ ] `__del__` のスペルが正しい
+- [ ] f-stringで変数を埋め込んだ
+
+---
+
+### ステップ1-9: テスト ⏱️ 5分
+
+```python
+# ファイルの最後に追加（テスト用）
+if __name__ == "__main__":
+    print("=== Employee テスト ===")
+    emp = Employee()
+    emp.set_name("テスト太郎")
+    emp.set_salary(300000)
+    print(f"名前: {emp.get_name()}")
+    print(f"給料: {emp.get_salary()}")
+```
+
+**実行:**
+```powershell
+python employee.py
+```
+
+**チェック項目:**
+- [ ] エラーなく実行できた
+- [ ] 「名前: テスト太郎」が表示された
+- [ ] 「給料: 300000」が表示された
+- [ ] デストラクタのメッセージが出た
+
+---
+
+### ✅ Phase 1 完了確認
+
+```
+[ ] employee.py が作成できた
+[ ] すべてのメソッドを実装した
+[ ] テストが成功した
+[ ] デストラクタが動作した
+```
+
+**⏰ 所要時間: 約30分**
+
+---
+
+## Phase 2: staff.py 実装
+
+### ステップ2-1: ファイル作成とインポート ⏱️ 3分
+
+```powershell
+notepad staff.py
+```
+
+```python
+"""
+staff.py
+スタッフクラスモジュール
+"""
+
+from employee import Employee
+```
+
+**チェック項目:**
+- [ ] ファイルを作成した
+- [ ] `from employee import Employee` と書いた
+
+---
+
+### ステップ2-2: クラス定義（継承） ⏱️ 5分
+
+```python
+class Staff(Employee):
+    """
+    一般社員クラス
+    
+    Attributes:
+        _division (str): 所属部署
+    """
+    
+    def __init__(self):
+        """コンストラクタ"""
+        super().__init__()  # ← 重要！親のコンストラクタ
+        self._division: str = ""
+```
+
+**チェック項目:**
+- [ ] `class Staff(Employee):` と継承を書いた
+- [ ] `super().__init__()` を**必ず**呼んだ
+- [ ] `_division` を初期化した
+
+---
+
+### ステップ2-3: division用メソッド実装 ⏱️ 5分
+
+```python
+    def get_division(self) -> str:
+        """所属部署を取得"""
+        return self._division
+    
+    def set_division(self, emp_division: str) -> None:
+        """所属部署を設定"""
+        self._division = emp_division
+```
+
+**チェック項目:**
+- [ ] get_division()を実装
+- [ ] set_division()を実装
+
+---
+
+### ステップ2-4: デストラクタ実装 ⏱️ 2分
+
+```python
+    def __del__(self):
+        """デストラクタ"""
+        print(f"[デストラクタ] Staff '{self._name}' が削除されました")
+```
+
+**チェック項目:**
+- [ ] デストラクタを実装した
+
+---
+
+### ステップ2-5: テスト ⏱️ 5分
+
+```python
+if __name__ == "__main__":
+    print("=== Staff テスト ===")
+    staff = Staff()
+    staff.set_name("佐藤太郎")  # 親のメソッド
+    staff.set_salary(200000)    # 親のメソッド
+    staff.set_division("営業部") # 自分のメソッド
+    print(f"名前: {staff.get_name()}")
+    print(f"給料: {staff.get_salary()}")
+    print(f"部署: {staff.get_division()}")
+```
+
+**実行:**
+```powershell
+python staff.py
+```
+
+**チェック項目:**
+- [ ] エラーなく実行できた
+- [ ] 親のメソッドが使えた
+- [ ] 自分のメソッドも使えた
+
+---
+
+### ✅ Phase 2 完了確認
+
+```
+[ ] staff.py が作成できた
+[ ] 継承が正しく動作した
+[ ] super().__init__() を忘れなかった
+[ ] テストが成功した
+```
+
+**⏰ 所要時間: 約20分**
+
+---
+
+## Phase 3: president.py 実装
+
+### ステップ3-1: ファイル作成とインポート ⏱️ 3分
+
+```powershell
+notepad president.py
+```
+
+```python
+"""
+president.py
+社長クラスモジュール
+"""
+
+from employee import Employee
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from company import Company
+```
+
+**チェック項目:**
+- [ ] ファイルを作成した
+- [ ] TYPE_CHECKINGをインポートした
+- [ ] 条件付きインポートを書いた
+
+---
+
+### ステップ3-2: クラス定義 ⏱️ 5分
+
+```python
+class President(Employee):
+    """社長クラス"""
+    
+    def __init__(self, company: 'Company'):
+        """コンストラクタ"""
+        super().__init__()
+        self._company: 'Company' = company
+```
+
+**チェック項目:**
+- [ ] `super().__init__()` を呼んだ
+- [ ] `_company` を保存した
+- [ ] 型ヒントに `'Company'` とクォート付き
+
+---
+
+### ステップ3-3: get_name()オーバーライド ⏱️ 3分
+
+```python
+    def get_name(self) -> str:
+        """名前取得（オーバーライド）"""
+        return self._name + "社長"
+```
+
+**チェック項目:**
+- [ ] 親と同じ名前のメソッドを定義
+- [ ] `+ "社長"` を追加
+
+---
+
+### ステップ3-4: dismiss()実装 ⏱️ 8分
+
+```python
+    def dismiss(self, name: str) -> None:
+        """社員を解雇する"""
+        self._company._staffs = [
+            staff for staff in self._company._staffs 
+            if staff.get_name() != name
+        ]
+        print(f"[解雇通知] {name}さんを解雇しました")
+```
+
+**チェック項目:**
+- [ ] リスト内包表記を使った
+- [ ] 条件: `staff.get_name() != name`
+- [ ] printで通知を出力
+
+---
+
+### ステップ3-5: デストラクタ ⏱️ 2分
+
+```python
+    def __del__(self):
+        """デストラクタ"""
+        print(f"[デストラクタ] President '{self._name}' が削除されました")
+```
+
+**チェック項目:**
+- [ ] デストラクタを実装した
+
+---
+
+### ✅ Phase 3 完了確認
+
+```
+[ ] president.py が作成できた
+[ ] オーバーライドを実装した
+[ ] dismiss()を実装した
+[ ] 循環インポートを回避した
+```
+
+**⏰ 所要時間: 約20分**
+
+---
+
+## Phase 4: company.py 実装
+
+### ステップ4-1: インポートとデコレータ ⏱️ 10分
+
+```powershell
+notepad company.py
+```
+
+```python
+"""
+company.py
+会社クラスモジュール
+"""
+
+from typing import List
+from functools import wraps
+from staff import Staff
+from president import President
+
+
+def print_employee_count(func):
+    """社員数表示デコレータ"""
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        result = func(self, *args, **kwargs)
+        total_employees = len(self._staffs) + 1
+        print(f"現在わが社の社員数は{total_employees}人になっています")
+        return result
+    return wrapper
+```
+
+**チェック項目:**
+- [ ] すべてのインポートを書いた
+- [ ] デコレータ関数を定義した
+- [ ] `@wraps(func)` を使った
+
+---
+
+### ステップ4-2: クラス定義 ⏱️ 5分
+
+```python
+class Company:
+    """会社クラス"""
+    
+    def __init__(self):
+        """コンストラクタ"""
+        self._staffs: List[Staff] = []
+        self._ceo: President = President(self)
+```
+
+**チェック項目:**
+- [ ] `_staffs` を空リストで初期化
+- [ ] `_ceo` を作成（selfを渡す）
+
+---
+
+### ステップ4-3: プロパティ実装 ⏱️ 5分
+
+```python
+    @property
+    def staffs(self) -> List[Staff]:
+        """社員リスト取得"""
+        return self._staffs
+    
+    @property
+    def ceo(self) -> President:
+        """社長取得"""
+        return self._ceo
+```
+
+**チェック項目:**
+- [ ] `@property` デコレータを付けた
+- [ ] staffsプロパティを実装
+- [ ] ceoプロパティを実装
+
+---
+
+### ステップ4-4: 解雇手続き実装 ⏱️ 8分
+
+```python
+    @print_employee_count
+    def set_dismissal_procedure(self, name: str) -> None:
+        """解雇手続き"""
+        self._staffs = [
+            staff for staff in self._staffs 
+            if staff.get_name() != name
+        ]
+        print(f"[解雇手続き完了] {name}さんの解雇手続きが完了しました")
+```
+
+**チェック項目:**
+- [ ] `@print_employee_count` を付けた
+- [ ] リスト内包表記で実装
+- [ ] メッセージを出力
+
+---
+
+### ステップ4-5: デストラクタ ⏱️ 2分
+
+```python
+    def __del__(self):
+        """デストラクタ"""
+        print("[デストラクタ] Company が削除されました")
+```
+
+**チェック項目:**
+- [ ] デストラクタを実装した
+
+---
+
+### ✅ Phase 4 完了確認
+
+```
+[ ] company.py が作成できた
+[ ] プロパティが動作する
+[ ] デコレータが動作する
+[ ] 解雇手続きが実装できた
+```
+
+**⏰ 所要時間: 約30分**
+
+---
+
+## Phase 5: main.py 実装
+
+### ステップ5-1: ファイル作成 ⏱️ 20分
+
+```powershell
+notepad main.py
+```
+
+```python
+"""
+main.py
+メインプログラム
+"""
+
+from company import Company
+from staff import Staff
+
+
+def main():
+    """メイン関数"""
+    print("=" * 60)
+    print("社員管理システム")
+    print("=" * 60)
+    print()
+    
+    # 会社作成
+    company = Company()
+    
+    # 社員1
+    staff1 = Staff()
+    staff1.set_name("佐藤太郎")
+    staff1.set_salary(200000)
+    staff1.set_division("営業部")
+    company.staffs.append(staff1)
+    
+    # 社員2
+    staff2 = Staff()
+    staff2.set_name("鈴木次郎")
+    staff2.set_salary(300000)
+    staff2.set_division("開発部")
+    company.staffs.append(staff2)
+    
+    # 社長
+    company.ceo.set_name("偉井杉人")
+    company.ceo.set_salary(2500000)
+    
+    # 表示
+    print("【社員一覧】")
+    for staff in company.staffs:
+        print(f"名前：{staff.get_name()}、"
+              f"給料：{staff.get_salary()}円、"
+              f"所属：{staff.get_division()}")
+    
+    print()
+    print("【社長情報】")
+    print(f"名前：{company.ceo.get_name()}、"
+          f"給料：{company.ceo.get_salary()}円")
+    
+    print()
+    print("=" * 60)
+
+
+if __name__ == "__main__":
+    main()
+    print("\n[プログラム終了]")
+```
+
+**チェック項目:**
+- [ ] main()関数を定義した
+- [ ] 社員2人を作成した
+- [ ] 社長を設定した
+- [ ] 情報を表示した
+- [ ] エントリーポイントを書いた
+
+---
+
+### ステップ5-2: 実行 ⏱️ 2分
+
+```powershell
+python main.py
+```
+
+**チェック項目:**
+- [ ] エラーなく実行できた
+- [ ] 社員一覧が表示された
+- [ ] 社長名に「社長」が付いている
+- [ ] デストラクタが呼ばれた
+
+---
+
+### ✅ Phase 5 完了確認
+
+```
+[ ] main.py が動作した
+[ ] 正しい出力が得られた
+[ ] すべての機能が使えた
+```
+
+**⏰ 所要時間: 約20分**
+
+---
+
+## Phase 6: テスト実装
+
+### ステップ6-1: テストファイル作成 ⏱️ 30分
+
+```powershell
+notepad test_all.py
+```
+
+```python
+"""簡易テスト"""
+from company import Company
+from staff import Staff
+
+print("=== テスト開始 ===\n")
+
+# テスト1: 社員追加
+company = Company()
+staff = Staff()
+staff.set_name("テスト太郎")
+company.staffs.append(staff)
+assert len(company.staffs) == 1, "社員追加失敗"
+print("✓ テスト1: 社員追加 成功")
+
+# テスト2: 社長のオーバーライド
+company.ceo.set_name("社長太郎")
+assert "社長" in company.ceo.get_name(), "オーバーライド失敗"
+print("✓ テスト2: オーバーライド 成功")
+
+# テスト3: 解雇
+company.ceo.dismiss("テスト太郎")
+assert len(company.staffs) == 0, "解雇失敗"
+print("✓ テスト3: 解雇 成功")
+
+print("\n=== すべてのテスト成功！ ===")
+```
+
+**実行:**
+```powershell
+python test_all.py
+```
+
+**チェック項目:**
+- [ ] すべてのテストが成功した
+- [ ] エラーが出なかった
+
+---
+
+### ✅ Phase 6 完了確認
+
+```
+[ ] テストファイルを作成した
+[ ] すべてのテストが通った
+```
+
+**⏰ 所要時間: 約30分**
+
+---
+
+## 🎉 最終チェックリスト
+
+### ファイル確認
+
+```powershell
+dir *.py
+```
+
+**必要なファイル:**
+- [ ] employee.py
+- [ ] staff.py
+- [ ] president.py
+- [ ] company.py
+- [ ] main.py
+- [ ] test_all.py (オプション)
+
+---
+
+### 機能確認
+
+- [ ] 社員の作成・管理ができる
+- [ ] 社長の作成・管理ができる
+- [ ] 継承が正しく動作する
+- [ ] オーバーライドが動作する
+- [ ] プロパティでアクセスできる
+- [ ] デコレータが動作する
+- [ ] 解雇処理ができる
+- [ ] デストラクタが呼ばれる
+
+---
+
+### コード品質
+
+- [ ] すべてのメソッドにDocstringがある
+- [ ] 型ヒントが付いている
+- [ ] インデントが統一されている
+- [ ] 変数名が適切
+- [ ] コメントが適切
+
+---
+
+## ⏰ 合計所要時間
+
+```
+Phase 1: employee.py      30分
+Phase 2: staff.py         20分
+Phase 3: president.py     20分
+Phase 4: company.py       30分
+Phase 5: main.py          20分
+Phase 6: test             30分
+--------------------------------
+合計:                    150分 (2.5時間)
+```
+
+---
+
+## 🎓 完成後にやること
+
+### 1. バックアップ
+```powershell
+# フォルダごとコピー
+xcopy C:\Users\yukik\desktop\excel C:\Users\yukik\desktop\excel_backup /E /I
+```
+
+### 2. GitHub にアップロード（オプション）
+
+### 3. 追加機能の実装
+- [ ] 社員の検索機能
+- [ ] 給料の昇給機能
+- [ ] 部署の変更機能
+- [ ] CSVファイルへの保存
+
+### 4. より高度な学習
+- [ ] unittestを使った本格的テスト
+- [ ] 例外処理の追加
+- [ ] データベース連携
+- [ ] GUIの作成
+
+---
+
+## 🆘 困ったら
+
+### エラーが出た
+1. エラーメッセージを読む
+2. 行番号を確認
+3. 「よくある間違い」ガイドを見る
+
+### 動作がおかしい
+1. print()でデバッグ
+2. 変数の値を確認
+3. 実行フロー解説を見る
+
+### わからない文法
+1. 「一行ずつ解説」を見る
+2. Google で検索
+3. ChatGPT に聞く
+
+---
+
+**頑張ってください！必ず完成できます！💪✨**
