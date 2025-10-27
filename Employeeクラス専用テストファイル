@@ -1,0 +1,56 @@
+"""
+test_employee.py
+Employeeクラス専用テストファイル
+"""
+
+import unittest
+from employee import Employee
+
+
+class TestEmployee(unittest.TestCase):
+    """Employeeクラスのテストケース"""
+    
+    def setUp(self):
+        """各テストの前に実行される準備処理"""
+        self.employee = Employee()
+    
+    def test_initial_values(self):
+        """初期値のテスト"""
+        self.assertEqual(self.employee.get_name(), "")
+        self.assertEqual(self.employee.get_salary(), 0)
+        print("✓ Employeeの初期値テスト成功")
+    
+    def test_set_and_get_name(self):
+        """名前の設定と取得のテスト"""
+        self.employee.set_name("山田太郎")
+        self.assertEqual(self.employee.get_name(), "山田太郎")
+        print("✓ 名前の設定・取得テスト成功")
+    
+    def test_set_and_get_salary(self):
+        """給料の設定と取得のテスト"""
+        self.employee.set_salary(300000)
+        self.assertEqual(self.employee.get_salary(), 300000)
+        print("✓ 給料の設定・取得テスト成功")
+    
+    def test_name_update(self):
+        """名前の更新テスト"""
+        self.employee.set_name("田中一郎")
+        self.assertEqual(self.employee.get_name(), "田中一郎")
+        self.employee.set_name("田中次郎")
+        self.assertEqual(self.employee.get_name(), "田中次郎")
+        print("✓ 名前の更新テスト成功")
+    
+    def test_salary_update(self):
+        """給料の更新テスト"""
+        self.employee.set_salary(200000)
+        self.assertEqual(self.employee.get_salary(), 200000)
+        self.employee.set_salary(250000)
+        self.assertEqual(self.employee.get_salary(), 250000)
+        print("✓ 給料の更新テスト成功")
+
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("Employeeクラス テスト実行")
+    print("=" * 60)
+    unittest.main(verbosity=2)
