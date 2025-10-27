@@ -1,0 +1,2613 @@
+"""
+employee.py
+社員基底クラスモジュール
+
+【このファイルの役割】
+すべての社員タイプの「土台」となるクラスです。
+家で例えると「基礎」の部分です。
+"""
+
+
+# クラスの定義：Employeeという名前の設計図を作る
+class Employee:
+    """
+    社員の基底クラス
+    
+    【クラスとは】
+    オブジェクト（物）を作るための「設計図」です。
+    この設計図から、何個でも社員を作ることができます。
+    
+    Attributes（属性）:
+        _name (str): 社員の名前（文字列型）
+        _salary (int): 社員の給料（整数型）
+        
+    【_(アンダースコア)の意味】
+    変数名の前の _ は「この変数はクラスの中だけで使ってね」という目印です。
+    外部から直接変更せず、メソッド（関数）を通して操作します。
+    """
+    
+    # コンストラクタ：インスタンス（実体）を作るときに最初に実行される特殊なメソッド
+    def __init__(self):
+        """
+        Employeeクラスのコンストラクタ
+        
+        【__init__とは】
+        クラスから新しいオブジェクトを作るときに自動的に呼ばれる特殊な関数です。
+        「初期化メソッド」とも呼ばれます。
+        
+        【selfとは】
+        自分自身（作成されるインスタンス）を指す特別な引数です。
+        必ず第一引数に書きます。
+        """
+        # self._name：このインスタンスの名前を保存する場所を作成
+        # str は文字列（string）の型ヒント。""で空の文字列を初期値にする
+        self._name: str = ""
+        
+        # self._salary：このインスタンスの給料を保存する場所を作成
+        # int は整数（integer）の型ヒント。0で初期化
+        self._salary: int = 0
+    
+    # メソッド：クラスの中に定義された関数
+    # 名前を取得（ゲット）するメソッド
+    def get_name(self) -> str:
+        """
+        社員の名前を取得する
+        
+        【-> str の意味】
+        この関数が文字列（str）を返すことを示す「戻り値の型ヒント」です。
+        
+        Returns（戻り値）:
+            str: 社員の名前
+        """
+        # return：この値を呼び出し元に返す
+        return self._name
+    
+    # 名前を設定（セット）するメソッド
+    def set_name(self, emp_name: str) -> None:
+        """
+        社員の名前を設定する
+        
+        【引数の型ヒント】
+        emp_name: str は「emp_nameという引数は文字列型ですよ」という意味
+        
+        【-> None の意味】
+        この関数は値を返さない（Noneを返す）ことを示します
+        
+        Args（引数）:
+            emp_name (str): 設定する社員の名前
+        """
+        # 引数で受け取った名前をインスタンス変数に代入（保存）する
+        self._name = emp_name
+    
+    # 給料を取得するメソッド
+    def get_salary(self) -> int:
+        """
+        社員の給料を取得する
+        
+        Returns:
+            int: 社員の給料（整数）
+        """
+        # インスタンス変数 _salary の値を返す
+        return self._salary
+    
+    # 給料を設定するメソッド
+    def set_salary(self, emp_salary: int) -> None:
+        """
+        社員の給料を設定する
+        
+        Args:
+            emp_salary (int): 設定する給料（整数）
+        """
+        # 引数で受け取った給料をインスタンス変数に代入
+        self._salary = emp_salary
+    
+    # デストラクタ：インスタンスが削除されるときに自動的に呼ばれる特殊なメソッド
+    def __del__(self):
+        """
+        デストラクタ - インスタンスが削除されるときに呼ばれる
+        
+        【__del__とは】
+        オブジェクトがメモリから削除される直前に自動的に実行される特殊な関数です。
+        掃除（クリーンアップ）処理などに使います。
+        """
+        # print()：画面に文字を表示する関数
+        # f"..." は「f-string（フォーマット文字列）」
+        # {}の中に変数を入れると、その値が文字列に埋め込まれます
+        print(f"[デストラクタ] Employeeインスタンス '{self._name}' が削除されました")
+
+
+# 【使用例】
+# employee = Employee()           # インスタンス作成（__init__が自動実行）
+# employee.set_name("山田太郎")    # 名前を設定
+# print(employee.get_name())      # "山田太郎" が表示される
+# employee.set_salary(300000)     # 給料を設定
+# print(employee.get_salary())    # 300000 が表示される
+
+
+
+ーーーーーーーーーーーーーーーーーー
+"""
+staff.py
+スタッフクラスモジュール
+
+【このファイルの役割】
+一般社員を表すクラスです。
+Employeeクラスを「継承」して、部署情報を追加します。
+"""
+
+# from モジュール名 import クラス名：他のファイルからクラスを読み込む
+# employee.py から Employee クラスをインポート（読み込み）
+from employee import Employee
+
+
+# クラス名(親クラス名)：継承を表す記法
+# Staff は Employee を継承（親子関係）
+class Staff(Employee):
+    """
+    一般社員クラス
+    
+    【継承とは】
+    既存のクラス（親）の機能を受け継いで、新しいクラス（子）を作ることです。
+    Staffは Employeeの機能（名前、給料）を全部持っていて、さらに部署も持ちます。
+    
+    【継承の利点】
+    - コードの再利用：同じコードを書かなくていい
+    - 拡張が簡単：親の機能に新しい機能を追加できる
+    
+    Attributes:
+        _name (str): 社員の名前（親クラスから継承）
+        _salary (int): 社員の給料（親クラスから継承）
+        _division (str): 所属部署（このクラスで新規追加）
+    """
+    
+    # コンストラクタ
+    def __init__(self):
+        """
+        Staffクラスのコンストラクタ
+        """
+        # super()：親クラス（Employee）を指す特別な関数
+        # super().__init__()：親クラスのコンストラクタを呼び出す
+        # これにより、_name と _salary が初期化される
+        super().__init__()
+        
+        # Staffクラス独自の属性を追加
+        # _division：部署名を保存する変数（空文字で初期化）
+        self._division: str = ""
+    
+    # 部署を取得するメソッド（Staffクラス独自のメソッド）
+    def get_division(self) -> str:
+        """
+        所属部署を取得する
+        
+        Returns:
+            str: 所属部署名
+        """
+        # インスタンス変数 _division の値を返す
+        return self._division
+    
+    # 部署を設定するメソッド（Staffクラス独自のメソッド）
+    def set_division(self, emp_division: str) -> None:
+        """
+        所属部署を設定する
+        
+        Args:
+            emp_division (str): 設定する部署名
+        """
+        # 引数で受け取った部署名をインスタンス変数に代入
+        self._division = emp_division
+    
+    # デストラクタ（親クラスのものをオーバーライド）
+    def __del__(self):
+        """
+        デストラクタ - インスタンスが削除されるときに呼ばれる
+        
+        【オーバーライドとは】
+        親クラスにある同じ名前のメソッドを、子クラスで書き換えることです。
+        この場合、Employeeの__del__を上書きしています。
+        """
+        # Staffに合わせたメッセージを表示
+        print(f"[デストラクタ] Staffインスタンス '{self._name}' が削除されました")
+
+
+# 【使用例】
+# staff = Staff()                      # Staffインスタンス作成
+# staff.set_name("佐藤太郎")           # 親から継承したメソッド
+# staff.set_salary(250000)             # 親から継承したメソッド
+# staff.set_division("開発部")         # Staff独自のメソッド
+# 
+# print(staff.get_name())              # "佐藤太郎"
+# print(staff.get_salary())            # 250000
+# print(staff.get_division())          # "開発部"
+#
+# 【継承のイメージ】
+# Employee（親）
+#   ├─ _name
+#   ├─ _salary
+#   ├─ get_name()
+#   ├─ set_name()
+#   ├─ get_salary()
+#   └─ set_salary()
+#        ↓ 継承
+# Staff（子）← 親の全機能 + 追加機能
+#   ├─ _name（継承）
+#   ├─ _salary（継承）
+#   ├─ _division（新規）
+#   ├─ get_name()（継承）
+#   ├─ set_name()（継承）
+#   ├─ get_salary()（継承）
+#   ├─ set_salary()（継承）
+#   ├─ get_division()（新規）
+#   └─ set_division()（新規）
+
+
+＾＾＾＾"""
+president.py
+社長クラスモジュール
+
+【このファイルの役割】
+社長を表すクラスです。
+Employeeを継承し、会社への参照を持ち、社員を解雇できます。
+"""
+
+# employee.py から Employee クラスをインポート
+from employee import Employee
+
+# typing モジュールから TYPE_CHECKING をインポート
+# 【TYPE_CHECKINGとは】
+# 型チェック時だけTrueになる特別な定数です。
+# 循環インポート（AがBを、BがAを読み込む問題）を避けるために使います
+from typing import TYPE_CHECKING
+
+# もし型チェック中なら（実行時は False）
+if TYPE_CHECKING:
+    # company.py から Company クラスをインポート
+    # 実行時は読み込まれないので、循環インポートエラーを回避できる
+    from company import Company
+
+
+# President クラスは Employee を継承
+class President(Employee):
+    """
+    社長クラス
+    
+    【このクラスの特徴】
+    1. Employeeを継承（名前と給料を持つ）
+    2. 会社への参照を持つ（どの会社の社長か知っている）
+    3. get_name()をオーバーライド（名前に「社長」を付ける）
+    4. dismiss()メソッドで社員を解雇できる
+    
+    Attributes:
+        _name (str): 社長の名前（親から継承）
+        _salary (int): 社長の給料（親から継承）
+        _company (Company): 所属する会社のインスタンス（新規追加）
+    """
+    
+    # コンストラクタ：companyという引数を受け取る
+    def __init__(self, company: 'Company'):
+        """
+        Presidentクラスのコンストラクタ
+        
+        【'Company'の意味】
+        シングルクォートで囲むことで「文字列として型ヒント」を指定。
+        これにより、まだ定義されていないクラスも型ヒントに使えます。
+        これを「前方参照（Forward Reference）」と呼びます。
+        
+        Args:
+            company (Company): 所属する会社のインスタンス
+        """
+        # 親クラス（Employee）のコンストラクタを呼び出す
+        super().__init__()
+        
+        # 引数で受け取った会社インスタンスを保存
+        # 【重要】社長は自分の会社を「知っている」状態になる
+        self._company: 'Company' = company
+    
+    # get_name()メソッドをオーバーライド（上書き）
+    def get_name(self) -> str:
+        """
+        社長の名前を取得する（オーバーライド）
+        
+        【オーバーライドとは】
+        親クラスにある同じ名前のメソッドを子クラスで書き換えることです。
+        親のget_name()は単に名前を返しますが、
+        このメソッドは名前に「社長」を付けて返します。
+        
+        Returns:
+            str: 「社長」の肩書き付きの名前
+        """
+        # self._name（名前）+ "社長" で文字列を連結
+        # 例："偉井杉人" + "社長" → "偉井杉人社長"
+        return self._name + "社長"
+    
+    # 社員を解雇するメソッド（President独自のメソッド）
+    def dismiss(self, name: str) -> None:
+        """
+        指定された名前の社員を解雇する
+        
+        【リスト内包表記を使用】
+        [要素 for 要素 in リスト if 条件]
+        条件に合う要素だけを新しいリストにする簡潔な書き方です。
+        
+        Args:
+            name (str): 解雇する社員の名前
+        """
+        # self._company._staffs：会社の社員リストにアクセス
+        # 以下のリスト内包表記で「指定された名前以外の社員」だけを残す
+        # つまり、指定された名前の社員を「削除」する
+        self._company._staffs = [
+            staff  # 残す社員
+            for staff in self._company._staffs  # 全社員をループ
+            if staff.get_name() != name  # 名前が一致しない社員だけ残す
+        ]
+        
+        # 【上記は以下のループと同じ意味】
+        # new_staffs = []
+        # for staff in self._company._staffs:
+        #     if staff.get_name() != name:
+        #         new_staffs.append(staff)
+        # self._company._staffs = new_staffs
+        
+        # 解雇通知を表示
+        print(f"[解雇通知] {name}さんを解雇しました")
+    
+    # デストラクタ
+    def __del__(self):
+        """デストラクタ - インスタンスが削除されるときに呼ばれる"""
+        print(f"[デストラクタ] Presidentインスタンス '{self._name}' が削除されました")
+
+
+# 【使用例】
+# company = Company()                    # 会社を作成
+# president = company.ceo                # 会社の社長を取得
+# president.set_name("偉井杉人")         # 社長の名前を設定
+# print(president.get_name())            # "偉井杉人社長" と表示される
+# 
+# # 社員を追加
+# staff = Staff()
+# staff.set_name("山田太郎")
+# company.staffs.append(staff)
+# 
+# # 社長が社員を解雇
+# president.dismiss("山田太郎")          # 山田太郎が解雇される
+#
+# 【オーバーライドのイメージ】
+# Employee.get_name()  → "偉井杉人" を返す（親）
+#        ↓ 上書き
+# President.get_name() → "偉井杉人社長" を返す（子）
+
+
+
+ーーーーーーーーーーーーーーーーーーーーーーー
+
+"""
+company.py
+会社クラスモジュール
+
+【このファイルの役割】
+会社を表すクラスです。
+社員（Staff）と社長（President）を管理します。
+デコレータという高度な機能も使います。
+"""
+
+# typing モジュールから List をインポート
+# List[Staff] = 「Staffのリスト」という型ヒント
+from typing import List
+
+# functools モジュールから wraps をインポート
+# デコレータを作るときに使う便利な関数
+from functools import wraps
+
+# staff.py から Staff クラスをインポート
+from staff import Staff
+
+# president.py から President クラスをインポート
+from president import President
+
+
+# デコレータ関数の定義
+# 【デコレータとは】
+# 既存の関数に「追加機能」を付ける特殊な関数です。
+# 関数を引数に取り、新しい関数を返します。
+def print_employee_count(func):
+    """
+    社員数を表示するデコレータ
+    
+    【デコレータの仕組み】
+    1. 元の関数（func）を受け取る
+    2. 新しい関数（wrapper）を作る
+    3. wrapper の中で func を実行し、前後に処理を追加
+    4. wrapper を返す
+    
+    このデコレータは、メソッド実行後に社員数を表示します。
+    
+    Args:
+        func: デコレートする関数（修飾される関数）
+        
+    Returns:
+        wrapper: ラップされた関数（修飾した関数）
+    """
+    
+    # @wraps(func)：元の関数の情報（名前、docstringなど）を保持する
+    # これを書かないと、デコレートされた関数の情報が失われます
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        """
+        ラッパー関数（元の関数を包む関数）
+        
+        【*args と **kwargs】
+        - *args：任意の数の位置引数を受け取る
+        - **kwargs：任意の数のキーワード引数を受け取る
+        これにより、どんな引数でも受け取れる柔軟な関数になります
+        
+        【実行の流れ】
+        1. 元の関数を実行
+        2. 戻り値を result に保存
+        3. 追加処理（社員数表示）を実行
+        4. result を返す
+        """
+        # 元の関数を実行して、結果を result に保存
+        result = func(self, *args, **kwargs)
+        
+        # 追加処理：社員数を計算して表示
+        # len()：リストの要素数を取得する関数
+        # self._staffs：社員リスト
+        # + 1：社長を追加（スタッフ数 + 社長1人）
+        total_employees = len(self._staffs) + 1
+        
+        # f-stringで社員数を埋め込んで表示
+        print(f"現在わが社の社員数は{total_employees}人になっています")
+        
+        # 元の関数の戻り値を返す
+        return result
+    
+    # ラッパー関数を返す（この関数が元の関数の代わりに実行される）
+    return wrapper
+
+
+# 会社クラスの定義
+class Company:
+    """
+    会社クラス
+    
+    【このクラスの役割】
+    - 社員（Staff）のリストを管理
+    - 社長（President）を持つ
+    - 解雇手続きを行う
+    
+    Attributes:
+        _staffs (List[Staff]): 社員のリスト（配列）
+        _ceo (President): 社長のインスタンス
+    """
+    
+    # コンストラクタ
+    def __init__(self):
+        """
+        Companyクラスのコンストラクタ
+        
+        【初期化の流れ】
+        1. 空の社員リストを作成
+        2. 社長を作成（このとき、社長に自分（会社）への参照を渡す）
+        """
+        # 空のリストを作成して _staffs に代入
+        # List[Staff]：「このリストにはStaffオブジェクトが入る」という型ヒント
+        # []：空のリスト
+        self._staffs: List[Staff] = []
+        
+        # President のインスタンスを作成
+        # President(self)：社長に「この会社（self）」への参照を渡す
+        # これにより、社長は自分の会社を知ることができる
+        self._ceo: President = President(self)
+    
+    # @property デコレータ：メソッドをプロパティ（属性）のように使えるようにする
+    @property
+    def staffs(self) -> List[Staff]:
+        """
+        社員リストを取得する（プロパティ）
+        
+        【@property とは】
+        メソッドを属性のように扱えるようにする特殊なデコレータです。
+        通常: company.staffs()  と書くところ
+        プロパティ: company.staffs  と書ける（()が不要）
+        
+        【プロパティの利点】
+        - 読み書きを制御できる（getterのみ、setterのみ、両方など）
+        - 値を取得する際に計算や検証ができる
+        - 属性のように自然に使える
+        
+        Returns:
+            List[Staff]: 社員のリスト
+        """
+        # インスタンス変数 _staffs を返す
+        return self._staffs
+    
+    # 社長を取得するプロパティ
+    @property
+    def ceo(self) -> President:
+        """
+        社長を取得する（プロパティ）
+        
+        Returns:
+            President: 社長のインスタンス
+        """
+        # インスタンス変数 _ceo を返す
+        return self._ceo
+    
+    # @print_employee_count：先ほど定義したデコレータを適用
+    # このメソッドを実行すると、自動的に社員数が表示される
+    @print_employee_count
+    def set_dismissal_procedure(self, name: str) -> None:
+        """
+        解雇手続きを実行する
+        
+        【デコレータの効果】
+        このメソッドは @print_employee_count で修飾されているので、
+        実行後に自動的に社員数が表示されます。
+        
+        【処理の流れ】
+        1. 指定された名前以外の社員を残す（リスト内包表記）
+        2. 解雇手続き完了メッセージを表示
+        3. デコレータが社員数を表示（自動）
+        
+        Args:
+            name (str): 解雇する社員の名前
+        """
+        # リスト内包表記で、指定された名前以外の社員だけを残す
+        self._staffs = [
+            staff  # 残す社員
+            for staff in self._staffs  # 全社員をループ
+            if staff.get_name() != name  # 名前が一致しない社員だけ
+        ]
+        
+        # 解雇手続き完了メッセージ
+        print(f"[解雇手続き完了] {name}さんの解雇手続きが完了しました")
+        
+        # この後、デコレータが自動的に社員数を表示します
+    
+    # デストラクタ
+    def __del__(self):
+        """デストラクタ - インスタンスが削除されるときに呼ばれる"""
+        print("[デストラクタ] Companyインスタンスが削除されました")
+
+
+# 【使用例】
+# company = Company()                    # 会社を作成
+# print(len(company.staffs))             # 0（社員なし）
+# 
+# # 社員を追加
+# staff1 = Staff()
+# staff1.set_name("田中太郎")
+# company.staffs.append(staff1)          # プロパティとして使用
+# 
+# staff2 = Staff()
+# staff2.set_name("山田花子")
+# company.staffs.append(staff2)
+# 
+# # 解雇手続き（デコレータが社員数を自動表示）
+# company.set_dismissal_procedure("田中太郎")
+# # 出力：
+# # [解雇手続き完了] 田中太郎さんの解雇手続きが完了しました
+# # 現在わが社の社員数は2人になっています（1人 + 社長）
+#
+# 【デコレータのイメージ】
+# @デコレータ
+# def 関数():
+#     処理
+#
+# ↓ これは以下と同じ
+#
+# def 関数():
+#     処理
+# 関数 = デコレータ(関数)
+
+
+
+ーーーーーーーーーーーーーーーー
+
+"""
+test_employee.py
+Employeeクラス専用テストファイル
+
+【このファイルの役割】
+Employeeクラスが正しく動作するかテストします。
+unittest という Python標準のテストフレームワークを使います。
+"""
+
+# unittest モジュールをインポート
+# 【unittestとは】
+# Pythonに標準で入っているテスト用のライブラリです。
+# テストケースを書いて、コードが正しく動くか自動で確認できます。
+import unittest
+
+# employee.py から Employee クラスをインポート
+from employee import Employee
+
+
+# テストクラスの定義（unittest.TestCase を継承）
+# 【unittest.TestCaseとは】
+# すべてのテストクラスはこれを継承する必要があります。
+# これにより、assertEqual などのテスト用メソッドが使えるようになります。
+class TestEmployee(unittest.TestCase):
+    """
+    Employeeクラスのテストケース
+    
+    【テストケースとは】
+    「こういう入力をしたら、こういう結果になるはず」という確認項目の集まりです。
+    """
+    
+    # setUp メソッド：各テストの前に毎回実行される特殊なメソッド
+    def setUp(self):
+        """
+        各テストの前に実行される準備処理
+        
+        【setUpとは】
+        test_で始まる各テストメソッドが実行される「直前」に自動的に呼ばれます。
+        テストで使う共通のオブジェクトを作成するのに便利です。
+        
+        【実行順序の例】
+        setUp() → test_initial_values() → tearDown()
+        setUp() → test_set_and_get_name() → tearDown()
+        setUp() → test_set_and_get_salary() → tearDown()
+        ...
+        """
+        # Employeeのインスタンスを作成して self.employee に保存
+        # self.employee：テストメソッド内で共通して使えるインスタンス変数
+        self.employee = Employee()
+    
+    # テストメソッド1：初期値のテスト
+    # 【テストメソッドの命名規則】
+    # 必ず test_ で始める必要があります。そうしないと実行されません。
+    def test_initial_values(self):
+        """
+        初期値のテスト
+        
+        【このテストの目的】
+        Employeeインスタンスを作った直後、名前と給料が正しく初期化されているか確認
+        """
+        # assertEqual(A, B)：AとBが等しいかチェック
+        # 等しくない場合、テストは「失敗」として記録されます
+        # 【期待値】名前は空文字列("")のはず
+        self.assertEqual(self.employee.get_name(), "")
+        
+        # 【期待値】給料は0のはず
+        self.assertEqual(self.employee.get_salary(), 0)
+        
+        # テスト成功メッセージを表示
+        # ✓（チェックマーク）：テスト成功を視覚的に示す
+        print("✓ Employeeの初期値テスト成功")
+    
+    # テストメソッド2：名前の設定と取得のテスト
+    def test_set_and_get_name(self):
+        """
+        名前の設定と取得のテスト
+        
+        【このテストの目的】
+        set_name() で設定した名前が、get_name() で正しく取得できるか確認
+        """
+        # 名前を設定
+        self.employee.set_name("山田太郎")
+        
+        # 設定した名前が正しく取得できるか確認
+        # 【期待値】"山田太郎" が返ってくるはず
+        self.assertEqual(self.employee.get_name(), "山田太郎")
+        
+        # 成功メッセージ
+        print("✓ 名前の設定・取得テスト成功")
+    
+    # テストメソッド3：給料の設定と取得のテスト
+    def test_set_and_get_salary(self):
+        """
+        給料の設定と取得のテスト
+        
+        【このテストの目的】
+        set_salary() で設定した給料が、get_salary() で正しく取得できるか確認
+        """
+        # 給料を設定
+        self.employee.set_salary(300000)
+        
+        # 設定した給料が正しく取得できるか確認
+        # 【期待値】300000 が返ってくるはず
+        self.assertEqual(self.employee.get_salary(), 300000)
+        
+        # 成功メッセージ
+        print("✓ 給料の設定・取得テスト成功")
+    
+    # テストメソッド4：名前の更新テスト
+    def test_name_update(self):
+        """
+        名前の更新テスト
+        
+        【このテストの目的】
+        一度設定した名前を別の名前に変更できるか確認
+        """
+        # 最初の名前を設定
+        self.employee.set_name("田中一郎")
+        # 正しく設定されたか確認
+        self.assertEqual(self.employee.get_name(), "田中一郎")
+        
+        # 名前を変更
+        self.employee.set_name("田中次郎")
+        # 変更後の名前が正しく取得できるか確認
+        self.assertEqual(self.employee.get_name(), "田中次郎")
+        
+        # 成功メッセージ
+        print("✓ 名前の更新テスト成功")
+    
+    # テストメソッド5：給料の更新テスト
+    def test_salary_update(self):
+        """
+        給料の更新テスト
+        
+        【このテストの目的】
+        一度設定した給料を別の金額に変更できるか確認
+        """
+        # 最初の給料を設定
+        self.employee.set_salary(200000)
+        # 正しく設定されたか確認
+        self.assertEqual(self.employee.get_salary(), 200000)
+        
+        # 給料を変更（昇給！）
+        self.employee.set_salary(250000)
+        # 変更後の給料が正しく取得できるか確認
+        self.assertEqual(self.employee.get_salary(), 250000)
+        
+        # 成功メッセージ
+        print("✓ 給料の更新テスト成功")
+
+
+# if __name__ == "__main__":
+# 【この条件文の意味】
+# このファイルが直接実行された場合のみ、以下のコードを実行します。
+# 他のファイルからインポートされた場合は実行されません。
+if __name__ == "__main__":
+    # 区切り線を表示（見やすくするため）
+    print("=" * 60)
+    print("Employeeクラス テスト実行")
+    print("=" * 60)
+    
+    # unittest.main()：すべてのテストメソッドを自動的に実行
+    # verbosity=2：詳細な出力モード（各テストの結果を表示）
+    #   - verbosity=0：最小限の出力
+    #   - verbosity=1：標準の出力
+    #   - verbosity=2：詳細な出力（推奨）
+    unittest.main(verbosity=2)
+
+
+# 【実行方法】
+# コマンドライン（ターミナル）で以下を実行：
+# python test_employee.py
+#
+# 【出力例】
+# ============================================================
+# Employeeクラス テスト実行
+# ============================================================
+# test_initial_values (__main__.TestEmployee) ... ✓ Employeeの初期値テスト成功
+# ok
+# test_name_update (__main__.TestEmployee) ... ✓ 名前の更新テスト成功
+# ok
+# test_salary_update (__main__.TestEmployee) ... ✓ 給料の更新テスト成功
+# ok
+# test_set_and_get_name (__main__.TestEmployee) ... ✓ 名前の設定・取得テスト成功
+# ok
+# test_set_and_get_salary (__main__.TestEmployee) ... ✓ 給料の設定・取得テスト成功
+# ok
+#
+# ----------------------------------------------------------------------
+# Ran 5 tests in 0.001s
+#
+# OK
+#
+# 【テストの流れ】
+# 1. setUp() でインスタンス作成
+# 2. test_メソッド実行
+# 3. 結果を記録
+# 4. 次のテストへ（setUp() からやり直し）
+
+
+
+ーーーーーーーーーーーーーーーーーー
+"""
+test_staff.py
+Staffクラス専用テストファイル
+
+【このファイルの役割】
+Staffクラスが正しく動作するかテストします。
+特に「継承が正しく機能しているか」を重点的にチェックします。
+"""
+
+# unittest モジュールをインポート
+import unittest
+
+# employee.py から Employee クラスをインポート
+# 継承のテストで使います
+from employee import Employee
+
+# staff.py から Staff クラスをインポート
+from staff import Staff
+
+
+# テストクラスの定義
+class TestStaff(unittest.TestCase):
+    """
+    Staffクラスのテストケース
+    
+    【このテストクラスの目的】
+    1. Staffが正しくEmployeeを継承しているか
+    2. 部署情報が正しく管理できるか
+    3. 親クラスの機能も正しく使えるか
+    """
+    
+    # setUp：各テストの前に実行される準備処理
+    def setUp(self):
+        """
+        各テストの前に実行される準備処理
+        """
+        # Staffのインスタンスを作成
+        # このインスタンスは全テストメソッドで共通して使えます
+        self.staff = Staff()
+    
+    # テストメソッド1：継承のテスト
+    def test_inheritance(self):
+        """
+        継承のテスト
+        
+        【このテストの目的】
+        StaffがEmployeeを正しく継承しているか確認
+        """
+        # assertIsInstance(オブジェクト, クラス)：
+        # オブジェクトが指定したクラスのインスタンスかチェック
+        # 【期待値】staff は Employee のインスタンスでもあるはず（継承しているから）
+        self.assertIsInstance(self.staff, Employee)
+        
+        # hasattr(オブジェクト, '属性名')：
+        # オブジェクトが指定した属性（メソッド）を持っているかチェック
+        # 【期待値】親クラスのメソッドが使えるはず
+        self.assertTrue(hasattr(self.staff, 'get_name'))
+        self.assertTrue(hasattr(self.staff, 'get_salary'))
+        
+        # 成功メッセージ
+        print("✓ Staff継承テスト成功")
+    
+    # テストメソッド2：部署の初期値テスト
+    def test_division_initial_value(self):
+        """
+        部署の初期値テスト
+        
+        【このテストの目的】
+        Staffインスタンスを作った直後、部署が正しく初期化されているか確認
+        """
+        # 【期待値】部署は空文字列("")のはず
+        self.assertEqual(self.staff.get_division(), "")
+        
+        # 成功メッセージ
+        print("✓ 部署の初期値テスト成功")
+    
+    # テストメソッド3：部署の設定と取得のテスト
+    def test_set_and_get_division(self):
+        """
+        部署の設定と取得のテスト
+        
+        【このテストの目的】
+        set_division() で設定した部署が、get_division() で正しく取得できるか確認
+        """
+        # 部署を設定
+        self.staff.set_division("開発部")
+        
+        # 設定した部署が正しく取得できるか確認
+        # 【期待値】"開発部" が返ってくるはず
+        self.assertEqual(self.staff.get_division(), "開発部")
+        
+        # 成功メッセージ
+        print("✓ 部署の設定・取得テスト成功")
+    
+    # テストメソッド4：完全な社員データのテスト
+    def test_complete_staff_data(self):
+        """
+        完全な社員データのテスト
+        
+        【このテストの目的】
+        名前・給料・部署のすべてを設定して、全部正しく取得できるか確認
+        継承した機能と独自の機能が両方正しく動作するかの統合テスト
+        """
+        # 名前を設定（親クラスから継承したメソッド）
+        self.staff.set_name("佐藤太郎")
+        
+        # 給料を設定（親クラスから継承したメソッド）
+        self.staff.set_salary(200000)
+        
+        # 部署を設定（Staffクラス独自のメソッド）
+        self.staff.set_division("営業部")
+        
+        # すべての値が正しく取得できるか確認
+        self.assertEqual(self.staff.get_name(), "佐藤太郎")
+        self.assertEqual(self.staff.get_salary(), 200000)
+        self.assertEqual(self.staff.get_division(), "営業部")
+        
+        # 成功メッセージ
+        print("✓ 完全な社員データテスト成功")
+    
+    # テストメソッド5：部署の更新テスト
+    def test_division_update(self):
+        """
+        部署の更新テスト
+        
+        【このテストの目的】
+        一度設定した部署を別の部署に変更できるか確認（異動のシミュレーション）
+        """
+        # 最初の部署を設定
+        self.staff.set_division("営業部")
+        # 正しく設定されたか確認
+        self.assertEqual(self.staff.get_division(), "営業部")
+        
+        # 部署を変更（異動）
+        self.staff.set_division("開発部")
+        # 変更後の部署が正しく取得できるか確認
+        self.assertEqual(self.staff.get_division(), "開発部")
+        
+        # 成功メッセージ
+        print("✓ 部署の更新テスト成功")
+    
+    # テストメソッド6：複数プロパティの連続設定テスト
+    def test_multiple_properties(self):
+        """
+        複数プロパティの連続設定テスト
+        
+        【このテストの目的】
+        複数の属性を連続して設定しても、すべてが正しく保持されるか確認
+        データが上書きされたり、消えたりしないかをチェック
+        """
+        # 3つの属性を連続して設定
+        self.staff.set_name("鈴木次郎")
+        self.staff.set_salary(300000)
+        self.staff.set_division("企画部")
+        
+        # すべての値が正しく保持されているか確認
+        # 【重要】後で設定した値が、前に設定した値を上書きしていないかチェック
+        self.assertEqual(self.staff.get_name(), "鈴木次郎")
+        self.assertEqual(self.staff.get_salary(), 300000)
+        self.assertEqual(self.staff.get_division(), "企画部")
+        
+        # 成功メッセージ
+        print("✓ 複数プロパティ連続設定テスト成功")
+
+
+# このファイルが直接実行された場合
+if __name__ == "__main__":
+    # 区切り線を表示
+    print("=" * 60)
+    print("Staffクラス テスト実行")
+    print("=" * 60)
+    
+    # すべてのテストを実行
+    # verbosity=2：詳細モード
+    unittest.main(verbosity=2)
+
+
+# 【実行方法】
+# python test_staff.py
+#
+# 【テストのポイント】
+# 1. test_inheritance：継承が正しく機能しているか
+#    → StaffはEmployeeのインスタンスでもある
+#    → 親のメソッドが使える
+#
+# 2. test_division_*：Staff独自の機能が正しく動作するか
+#    → 部署の設定・取得・更新
+#
+# 3. test_complete_staff_data：親と子の機能が両方使えるか
+#    → 名前、給料（親）+ 部署（子）
+#
+# 【継承のイメージ】
+# Employee（親）          Staff（子）
+#   ├─ _name     ────→    ├─ _name（継承）
+#   ├─ _salary   ────→    ├─ _salary（継承）
+#   ├─ get_name()────→    ├─ get_name()（継承）
+#   └─ set_name()────→    ├─ set_name()（継承）
+#                          ├─ _division（新規）
+#                          ├─ get_division()（新規）
+#                          └─ set_division()（新規）
+
+
+
+
+ーーーーーーーーーーーーー
+
+
+"""
+test_president.py
+Presidentクラス専用テストファイル
+
+【このファイルの役割】
+Presidentクラスが正しく動作するかテストします。
+特に「オーバーライド」と「dismiss機能」を重点的にチェックします。
+"""
+
+# unittest モジュールをインポート
+import unittest
+
+# sys モジュールをインポート
+# 標準出力（print）を制御するために使います
+import sys
+
+# io モジュールから StringIO をインポート
+# 【StringIOとは】
+# メモリ上に文字列を保存できる「仮想的なファイル」です。
+# print の出力を画面ではなくメモリに保存するために使います
+from io import StringIO
+
+# 必要なクラスをインポート
+from employee import Employee
+from staff import Staff
+from president import President
+from company import Company
+
+
+# テストクラスの定義
+class TestPresident(unittest.TestCase):
+    """
+    Presidentクラスのテストケース
+    
+    【このテストクラスの目的】
+    1. Presidentが正しくEmployeeを継承しているか
+    2. get_name()のオーバーライドが正しく動作するか
+    3. 会社への参照が正しく設定されているか
+    4. dismiss()メソッドが正しく社員を解雇できるか
+    """
+    
+    # setUp：各テストの前に実行される準備処理
+    def setUp(self):
+        """
+        各テストの前に実行される準備処理
+        """
+        # 会社のインスタンスを作成
+        # 会社を作ると、自動的に社長も作られます
+        self.company = Company()
+        
+        # 会社の社長を取得して self.president に保存
+        # company.ceo はプロパティなので()不要
+        self.president = self.company.ceo
+    
+    # テストメソッド1：継承のテスト
+    def test_inheritance(self):
+        """
+        継承のテスト
+        
+        【このテストの目的】
+        PresidentがEmployeeを正しく継承しているか確認
+        """
+        # 【期待値】president は Employee のインスタンスでもあるはず
+        self.assertIsInstance(self.president, Employee)
+        
+        # 成功メッセージ
+        print("✓ President継承テスト成功")
+    
+    # テストメソッド2：get_name()のオーバーライドテスト
+    def test_name_override(self):
+        """
+        get_name()のオーバーライドテスト
+        
+        【このテストの目的】
+        Presidentのget_name()が名前に「社長」を追加して返すか確認
+        """
+        # 社長の名前を設定
+        self.president.set_name("偉井杉人")
+        
+        # get_name()を呼び出す
+        # 【期待値】"偉井杉人社長" が返ってくるはず（"社長"が追加される）
+        self.assertEqual(self.president.get_name(), "偉井杉人社長")
+        
+        # 成功メッセージ
+        print("✓ 名前オーバーライドテスト成功")
+    
+    # テストメソッド3：空の名前でのオーバーライドテスト
+    def test_name_override_empty(self):
+        """
+        空の名前でのオーバーライドテスト
+        
+        【このテストの目的】
+        名前を設定しない場合でも、「社長」が追加されるか確認
+        """
+        # 名前を設定しない（空文字列のまま）
+        # 【期待値】"" + "社長" = "社長" が返ってくるはず
+        self.assertEqual(self.president.get_name(), "社長")
+        
+        # 成功メッセージ
+        print("✓ 空の名前オーバーライドテスト成功")
+    
+    # テストメソッド4：会社インスタンスへの参照テスト
+    def test_company_reference(self):
+        """
+        会社インスタンスへの参照テスト
+        
+        【このテストの目的】
+        社長が自分の会社への参照を正しく持っているか確認
+        """
+        # assertIsNotNone(値)：値がNone（空）でないことを確認
+        # 【期待値】_company は None ではないはず
+        self.assertIsNotNone(self.president._company)
+        
+        # 【期待値】_company は self.company と同じオブジェクトのはず
+        self.assertEqual(self.president._company, self.company)
+        
+        # 成功メッセージ
+        print("✓ 会社参照テスト成功")
+    
+    # テストメソッド5：dismissメソッド - 1人解雇のテスト
+    def test_dismiss_method_single(self):
+        """
+        dismissメソッド - 1人解雇のテスト
+        
+        【このテストの目的】
+        dismiss()で指定した社員が正しく解雇されるか確認
+        """
+        # 社員を2人作成して会社に追加
+        # 社員1
+        staff1 = Staff()
+        staff1.set_name("山田太郎")
+        self.company.staffs.append(staff1)
+        
+        # 社員2
+        staff2 = Staff()
+        staff2.set_name("田中花子")
+        self.company.staffs.append(staff2)
+        
+        # 解雇前の確認
+        # 【期待値】社員は2人いるはず
+        self.assertEqual(len(self.company.staffs), 2)
+        
+        # 標準出力をキャプチャ（print文を画面に表示させない）
+        # 【StringIO()の使い方】
+        # 1. StringIO()で仮想ファイルを作成
+        # 2. sys.stdout に代入して、printの出力先を変更
+        # 3. テスト実行
+        # 4. sys.__stdout__ で元に戻す
+        captured_output = StringIO()
+        sys.stdout = captured_output
+        
+        # 解雇実行
+        self.president.dismiss("山田太郎")
+        
+        # 標準出力を元に戻す
+        # sys.__stdout__：元々の標準出力（画面）
+        sys.stdout = sys.__stdout__
+        
+        # 解雇後の確認
+        # 【期待値】社員は1人になっているはず
+        self.assertEqual(len(self.company.staffs), 1)
+        
+        # 【期待値】残っているのは田中花子さんのはず
+        self.assertEqual(self.company.staffs[0].get_name(), "田中花子")
+        
+        # 成功メッセージ
+        print("✓ dismiss単一解雇テスト成功")
+    
+    # テストメソッド6：dismissメソッド - 複数解雇のテスト
+    def test_dismiss_method_multiple(self):
+        """
+        dismissメソッド - 複数解雇のテスト
+        
+        【このテストの目的】
+        複数の社員を連続で解雇できるか確認
+        """
+        # 社員を3人追加
+        staff1 = Staff()
+        staff1.set_name("山田太郎")
+        self.company.staffs.append(staff1)
+        
+        staff2 = Staff()
+        staff2.set_name("田中花子")
+        self.company.staffs.append(staff2)
+        
+        staff3 = Staff()
+        staff3.set_name("佐藤次郎")
+        self.company.staffs.append(staff3)
+        
+        # 標準出力をキャプチャ（print文を抑制）
+        captured_output = StringIO()
+        sys.stdout = captured_output
+        
+        # 2人連続で解雇
+        self.president.dismiss("山田太郎")
+        self.president.dismiss("佐藤次郎")
+        
+        # 標準出力を復元
+        sys.stdout = sys.__stdout__
+        
+        # 解雇後の確認
+        # 【期待値】社員は1人になっているはず（3人 - 2人 = 1人）
+        self.assertEqual(len(self.company.staffs), 1)
+        
+        # 【期待値】残っているのは田中花子さんのはず
+        self.assertEqual(self.company.staffs[0].get_name(), "田中花子")
+        
+        # 成功メッセージ
+        print("✓ dismiss複数解雇テスト成功")
+    
+    # テストメソッド7：存在しない社員の解雇テスト
+    def test_dismiss_nonexistent(self):
+        """
+        存在しない社員の解雇テスト
+        
+        【このテストの目的】
+        存在しない名前で解雇を試みても、エラーにならないか確認
+        """
+        # 社員を1人追加
+        staff1 = Staff()
+        staff1.set_name("山田太郎")
+        self.company.staffs.append(staff1)
+        
+        # 標準出力をキャプチャ
+        captured_output = StringIO()
+        sys.stdout = captured_output
+        
+        # 存在しない社員を解雇しようとする
+        self.president.dismiss("存在しない人")
+        
+        # 標準出力を復元
+        sys.stdout = sys.__stdout__
+        
+        # 社員数は変わらないはず
+        # 【期待値】まだ1人いるはず
+        self.assertEqual(len(self.company.staffs), 1)
+        
+        # 成功メッセージ
+        print("✓ 存在しない社員解雇テスト成功")
+
+
+# このファイルが直接実行された場合
+if __name__ == "__main__":
+    # 区切り線を表示
+    print("=" * 60)
+    print("Presidentクラス テスト実行")
+    print("=" * 60)
+    
+    # すべてのテストを実行
+    unittest.main(verbosity=2)
+
+
+# 【実行方法】
+# python test_president.py
+#
+# 【このテストファイルの重要ポイント】
+#
+# 1. StringIOの使い方：
+#    - print文をテスト中に抑制するテクニック
+#    - captured_output = StringIO()  # 仮想ファイル作成
+#    - sys.stdout = captured_output   # 出力先を変更
+#    - （テスト実行）
+#    - sys.stdout = sys.__stdout__    # 元に戻す
+#
+# 2. オーバーライドのテスト：
+#    - 親：get_name() → "偉井杉人"
+#    - 子：get_name() → "偉井杉人社長"（上
+
+
+
+ーーーーーーーーーーーーーーーーー
+"""
+test_company.py
+Companyクラス専用テストファイル
+
+【このファイルの役割】
+Companyクラスが正しく動作するかテストします。
+特に「プロパティ」と「デコレータ」の動作を重点的にチェックします。
+"""
+
+# 必要なモジュールをインポート
+import unittest  # テストフレームワーク
+import sys       # 標準出力を制御するため
+from io import StringIO  # print文をキャプチャするため
+
+# 必要なクラスをインポート
+from staff import Staff
+from president import President
+from company import Company
+
+
+# テストクラスの定義
+class TestCompany(unittest.TestCase):
+    """
+    Companyクラスのテストケース
+    
+    【このテストクラスの目的】
+    1. 会社の初期状態が正しいか
+    2. プロパティ（staffs, ceo）が正しく動作するか
+    3. 社員の追加・管理が正しくできるか
+    4. 解雇手続きメソッドが正しく動作するか
+    5. デコレータが正しく動作するか
+    """
+    
+    # setUp：各テストの前に実行
+    def setUp(self):
+        """各テストの前に実行される準備処理"""
+        # 会社のインスタンスを作成
+        # 作成と同時に、空の社員リストと社長が自動的に作られます
+        self.company = Company()
+    
+    # テストメソッド1：初期状態のテスト
+    def test_initial_state(self):
+        """
+        初期状態のテスト
+        
+        【このテストの目的】
+        会社を作った直後の状態が正しいか確認
+        """
+        # 【期待値】社員リストは空（0人）のはず
+        # len()：リストの要素数を取得
+        self.assertEqual(len(self.company.staffs), 0)
+        
+        # 【期待値】社長は存在する（Noneではない）はず
+        # assertIsNotNone()：値がNoneでないことを確認
+        self.assertIsNotNone(self.company.ceo)
+        
+        # 成功メッセージ
+        print("✓ 初期状態テスト成功")
+    
+    # テストメソッド2：staffsプロパティのテスト
+    def test_staffs_property(self):
+        """
+        staffsプロパティのテスト
+        
+        【このテストの目的】
+        staffsプロパティが正しくリストを返すか確認
+        """
+        # assertIsInstance(オブジェクト, 型)：型が正しいか確認
+        # 【期待値】staffs はリスト型のはず
+        self.assertIsInstance(self.company.staffs, list)
+        
+        # 成功メッセージ
+        print("✓ staffsプロパティテスト成功")
+    
+    # テストメソッド3：ceoプロパティのテスト
+    def test_ceo_property(self):
+        """
+        ceoプロパティのテスト
+        
+        【このテストの目的】
+        ceoプロパティが正しくPresidentインスタンスを返すか確認
+        """
+        # 【期待値】ceo は President 型のはず
+        self.assertIsInstance(self.company.ceo, President)
+        
+        # 成功メッセージ
+        print("✓ ceoプロパティテスト成功")
+    
+    # テストメソッド4：社員追加のテスト
+    def test_add_staff(self):
+        """
+        社員追加のテスト
+        
+        【このテストの目的】
+        社員を1人追加できるか確認
+        """
+        # 社員を作成
+        staff = Staff()
+        staff.set_name("鈴木次郎")
+        
+        # 会社の社員リストに追加
+        # append()：リストの末尾に要素を追加するメソッド
+        self.company.staffs.append(staff)
+        
+        # 追加後の確認
+        # 【期待値】社員リストの長さが1になっているはず
+        self.assertEqual(len(self.company.staffs), 1)
+        
+        # 【期待値】追加した社員の名前が正しく取得できるはず
+        # [0]：リストの最初の要素（0番目）を取得
+        self.assertEqual(self.company.staffs[0].get_name(), "鈴木次郎")
+        
+        # 成功メッセージ
+        print("✓ 社員追加テスト成功")
+    
+    # テストメソッド5：複数社員の追加テスト
+    def test_add_multiple_staff(self):
+        """
+        複数社員の追加テスト
+        
+        【このテストの目的】
+        複数の社員を連続で追加できるか確認
+        """
+        # 社員1を作成して追加
+        staff1 = Staff()
+        staff1.set_name("佐藤太郎")
+        self.company.staffs.append(staff1)
+        
+        # 社員2を作成して追加
+        staff2 = Staff()
+        staff2.set_name("鈴木次郎")
+        self.company.staffs.append(staff2)
+        
+        # 社員3を作成して追加
+        staff3 = Staff()
+        staff3.set_name("田中花子")
+        self.company.staffs.append(staff3)
+        
+        # 【期待値】社員リストの長さが3になっているはず
+        self.assertEqual(len(self.company.staffs), 3)
+        
+        # 成功メッセージ
+        print("✓ 複数社員追加テスト成功")
+    
+    # テストメソッド6：複数社員の管理テスト
+    def test_multiple_staff_management(self):
+        """
+        複数社員の管理テスト
+        
+        【このテストの目的】
+        複数の社員のデータが正しく個別に管理されているか確認
+        """
+        # for ループで5人の社員を作成
+        # range(5)：0,1,2,3,4 の5つの数値を生成
+        for i in range(5):
+            # 社員を作成
+            staff = Staff()
+            
+            # f-stringで番号付きの名前を設定
+            # i=0 → "社員1", i=1 → "社員2", ...
+            staff.set_name(f"社員{i+1}")
+            
+            # 給料を設定（i によって変わる）
+            # i=0 → 200000, i=1 → 210000, ...
+            staff.set_salary(200000 + i * 10000)
+            
+            # 部署を設定
+            staff.set_division(f"部署{i+1}")
+            
+            # 会社に追加
+            self.company.staffs.append(staff)
+        
+        # 【期待値】社員リストの長さが5になっているはず
+        self.assertEqual(len(self.company.staffs), 5)
+        
+        # 各社員のデータが正しく保持されているか確認
+        # enumerate()：リストの要素とインデックスを同時に取得
+        # 例：[(0, 社員1), (1, 社員2), ...]
+        for i, staff in enumerate(self.company.staffs):
+            # 各社員の名前が正しいか確認
+            self.assertEqual(staff.get_name(), f"社員{i+1}")
+            
+            # 各社員の給料が正しいか確認
+            self.assertEqual(staff.get_salary(), 200000 + i * 10000)
+            
+            # 各社員の部署が正しいか確認
+            self.assertEqual(staff.get_division(), f"部署{i+1}")
+        
+        # 成功メッセージ
+        print("✓ 複数社員管理テスト成功")
+    
+    # テストメソッド7：解雇手続きメソッドのテスト
+    def test_set_dismissal_procedure(self):
+        """
+        解雇手続きメソッドのテスト
+        
+        【このテストの目的】
+        set_dismissal_procedure()が正しく社員を解雇できるか確認
+        """
+        # 社員を2人追加
+        staff1 = Staff()
+        staff1.set_name("佐藤太郎")
+        self.company.staffs.append(staff1)
+        
+        staff2 = Staff()
+        staff2.set_name("鈴木次郎")
+        self.company.staffs.append(staff2)
+        
+        # 解雇前の確認
+        # 【期待値】2人いるはず
+        self.assertEqual(len(self.company.staffs), 2)
+        
+        # 標準出力をキャプチャ（デコレータの出力を抑制）
+        captured_output = StringIO()
+        sys.stdout = captured_output
+        
+        # 解雇実行
+        self.company.set_dismissal_procedure("佐藤太郎")
+        
+        # 標準出力を復元
+        sys.stdout = sys.__stdout__
+        
+        # 解雇後の確認
+        # 【期待値】1人になっているはず
+        self.assertEqual(len(self.company.staffs), 1)
+        
+        # 【期待値】残っているのは鈴木次郎さんのはず
+        self.assertEqual(self.company.staffs[0].get_name(), "鈴木次郎")
+        
+        # 成功メッセージ
+        print("✓ 解雇手続きテスト成功")
+    
+    # テストメソッド8：解雇手続きメソッドのデコレータテスト
+    def test_set_dismissal_procedure_decorator(self):
+        """
+        解雇手続きメソッドのデコレータテスト
+        
+        【このテストの目的】
+        デコレータが正しく動作して、社員数が表示されるか確認
+        """
+        # 社員を3人追加
+        staff1 = Staff()
+        staff1.set_name("佐藤太郎")
+        self.company.staffs.append(staff1)
+        
+        staff2 = Staff()
+        staff2.set_name("鈴木次郎")
+        self.company.staffs.append(staff2)
+        
+        staff3 = Staff()
+        staff3.set_name("田中花子")
+        self.company.staffs.append(staff3)
+        
+        # 標準出力をキャプチャ（今回は内容を確認する）
+        captured_output = StringIO()
+        sys.stdout = captured_output
+        
+        # 解雇実行
+        self.company.set_dismissal_procedure("鈴木次郎")
+        
+        # 出力内容を取得
+        # getvalue()：StringIOに保存された文字列を取得
+        output = captured_output.getvalue()
+        
+        # 標準出力を復元
+        sys.stdout = sys.__stdout__
+        
+        # デコレータのメッセージが含まれているか確認
+        # assertIn(部分文字列, 文字列)：部分文字列が含まれているか確認
+        self.assertIn("現在わが社の社員数は", output)
+        
+        # 社員数が正しく表示されているか確認
+        # 解雇後：社員2人 + 社長1人 = 3人
+        self.assertIn("3人になっています", output)
+        
+        # 成功メッセージ
+        print("✓ デコレータ機能テスト成功")
+    
+    # テストメソッド9：社長の設定テスト
+    def test_ceo_configuration(self):
+        """
+        社長の設定テスト
+        
+        【このテストの目的】
+        社長の情報を設定・取得できるか確認
+        """
+        # 社長の名前を設定
+        self.company.ceo.set_name("偉井杉人")
+        
+        # 社長の給料を設定
+        self.company.ceo.set_salary(2500000)
+        
+        # 名前の確認（"社長"が追加されているはず）
+        # 【期待値】"偉井杉人社長"
+        self.assertEqual(self.company.ceo.get_name(), "偉井杉人社長")
+        
+        # 給料の確認
+        # 【期待値】2500000
+        self.assertEqual(self.company.ceo.get_salary(), 2500000)
+        
+        # 成功メッセージ
+        print("✓ 社長設定テスト成功")
+
+
+# このファイルが直接実行された場合
+if __name__ == "__main__":
+    # 区切り線を表示
+    print("=" * 60)
+    print("Companyクラス テスト実行")
+    print("=" * 60)
+    
+    # すべてのテストを実行
+    unittest.main(verbosity=2)
+
+
+# 【実行方法】
+# python test_company.py
+#
+# 【このテストファイルの重要ポイント】
+#
+# 1. プロパティのテスト：
+#    - company.staffs（()なし）でリストを取得
+#    - company.ceo（()なし）で社長を取得
+#    - プロパティは属性のように使える
+#
+# 2. デコレータのテスト：
+#    - set_dismissal_procedure()実行後
+#    - 自動的に社員数が表示される
+#    - StringIOで出力内容を確認
+#
+# 3. リスト操作：
+#    - append()で追加
+#    - len()で要素数確認
+#    - [インデックス]で要素取得
+#    - enumerate()でインデックスと要素を同時取得
+#
+# 4. ループ処理：
+#    - for i in range(5)：5回繰り返し
+#    - f"社員{i+1}"：動的な文字列生成
+
+
+
+
+ーーーーーーーーーーーーー
+
+"""
+test_company.py
+Companyクラス専用テストファイル
+
+【このファイルの役割】
+Companyクラスが正しく動作するかテストします。
+特に「プロパティ」と「デコレータ」の動作を重点的にチェックします。
+"""
+
+# 必要なモジュールをインポート
+import unittest  # テストフレームワーク
+import sys       # 標準出力を制御するため
+from io import StringIO  # print文をキャプチャするため
+
+# 必要なクラスをインポート
+from staff import Staff
+from president import President
+from company import Company
+
+
+# テストクラスの定義
+class TestCompany(unittest.TestCase):
+    """
+    Companyクラスのテストケース
+    
+    【このテストクラスの目的】
+    1. 会社の初期状態が正しいか
+    2. プロパティ（staffs, ceo）が正しく動作するか
+    3. 社員の追加・管理が正しくできるか
+    4. 解雇手続きメソッドが正しく動作するか
+    5. デコレータが正しく動作するか
+    """
+    
+    # setUp：各テストの前に実行
+    def setUp(self):
+        """各テストの前に実行される準備処理"""
+        # 会社のインスタンスを作成
+        # 作成と同時に、空の社員リストと社長が自動的に作られます
+        self.company = Company()
+    
+    # テストメソッド1：初期状態のテスト
+    def test_initial_state(self):
+        """
+        初期状態のテスト
+        
+        【このテストの目的】
+        会社を作った直後の状態が正しいか確認
+        """
+        # 【期待値】社員リストは空（0人）のはず
+        # len()：リストの要素数を取得
+        self.assertEqual(len(self.company.staffs), 0)
+        
+        # 【期待値】社長は存在する（Noneではない）はず
+        # assertIsNotNone()：値がNoneでないことを確認
+        self.assertIsNotNone(self.company.ceo)
+        
+        # 成功メッセージ
+        print("✓ 初期状態テスト成功")
+    
+    # テストメソッド2：staffsプロパティのテスト
+    def test_staffs_property(self):
+        """
+        staffsプロパティのテスト
+        
+        【このテストの目的】
+        staffsプロパティが正しくリストを返すか確認
+        """
+        # assertIsInstance(オブジェクト, 型)：型が正しいか確認
+        # 【期待値】staffs はリスト型のはず
+        self.assertIsInstance(self.company.staffs, list)
+        
+        # 成功メッセージ
+        print("✓ staffsプロパティテスト成功")
+    
+    # テストメソッド3：ceoプロパティのテスト
+    def test_ceo_property(self):
+        """
+        ceoプロパティのテスト
+        
+        【このテストの目的】
+        ceoプロパティが正しくPresidentインスタンスを返すか確認
+        """
+        # 【期待値】ceo は President 型のはず
+        self.assertIsInstance(self.company.ceo, President)
+        
+        # 成功メッセージ
+        print("✓ ceoプロパティテスト成功")
+    
+    # テストメソッド4：社員追加のテスト
+    def test_add_staff(self):
+        """
+        社員追加のテスト
+        
+        【このテストの目的】
+        社員を1人追加できるか確認
+        """
+        # 社員を作成
+        staff = Staff()
+        staff.set_name("鈴木次郎")
+        
+        # 会社の社員リストに追加
+        # append()：リストの末尾に要素を追加するメソッド
+        self.company.staffs.append(staff)
+        
+        # 追加後の確認
+        # 【期待値】社員リストの長さが1になっているはず
+        self.assertEqual(len(self.company.staffs), 1)
+        
+        # 【期待値】追加した社員の名前が正しく取得できるはず
+        # [0]：リストの最初の要素（0番目）を取得
+        self.assertEqual(self.company.staffs[0].get_name(), "鈴木次郎")
+        
+        # 成功メッセージ
+        print("✓ 社員追加テスト成功")
+    
+    # テストメソッド5：複数社員の追加テスト
+    def test_add_multiple_staff(self):
+        """
+        複数社員の追加テスト
+        
+        【このテストの目的】
+        複数の社員を連続で追加できるか確認
+        """
+        # 社員1を作成して追加
+        staff1 = Staff()
+        staff1.set_name("佐藤太郎")
+        self.company.staffs.append(staff1)
+        
+        # 社員2を作成して追加
+        staff2 = Staff()
+        staff2.set_name("鈴木次郎")
+        self.company.staffs.append(staff2)
+        
+        # 社員3を作成して追加
+        staff3 = Staff()
+        staff3.set_name("田中花子")
+        self.company.staffs.append(staff3)
+        
+        # 【期待値】社員リストの長さが3になっているはず
+        self.assertEqual(len(self.company.staffs), 3)
+        
+        # 成功メッセージ
+        print("✓ 複数社員追加テスト成功")
+    
+    # テストメソッド6：複数社員の管理テスト
+    def test_multiple_staff_management(self):
+        """
+        複数社員の管理テスト
+        
+        【このテストの目的】
+        複数の社員のデータが正しく個別に管理されているか確認
+        """
+        # for ループで5人の社員を作成
+        # range(5)：0,1,2,3,4 の5つの数値を生成
+        for i in range(5):
+            # 社員を作成
+            staff = Staff()
+            
+            # f-stringで番号付きの名前を設定
+            # i=0 → "社員1", i=1 → "社員2", ...
+            staff.set_name(f"社員{i+1}")
+            
+            # 給料を設定（i によって変わる）
+            # i=0 → 200000, i=1 → 210000, ...
+            staff.set_salary(200000 + i * 10000)
+            
+            # 部署を設定
+            staff.set_division(f"部署{i+1}")
+            
+            # 会社に追加
+            self.company.staffs.append(staff)
+        
+        # 【期待値】社員リストの長さが5になっているはず
+        self.assertEqual(len(self.company.staffs), 5)
+        
+        # 各社員のデータが正しく保持されているか確認
+        # enumerate()：リストの要素とインデックスを同時に取得
+        # 例：[(0, 社員1), (1, 社員2), ...]
+        for i, staff in enumerate(self.company.staffs):
+            # 各社員の名前が正しいか確認
+            self.assertEqual(staff.get_name(), f"社員{i+1}")
+            
+            # 各社員の給料が正しいか確認
+            self.assertEqual(staff.get_salary(), 200000 + i * 10000)
+            
+            # 各社員の部署が正しいか確認
+            self.assertEqual(staff.get_division(), f"部署{i+1}")
+        
+        # 成功メッセージ
+        print("✓ 複数社員管理テスト成功")
+    
+    # テストメソッド7：解雇手続きメソッドのテスト
+    def test_set_dismissal_procedure(self):
+        """
+        解雇手続きメソッドのテスト
+        
+        【このテストの目的】
+        set_dismissal_procedure()が正しく社員を解雇できるか確認
+        """
+        # 社員を2人追加
+        staff1 = Staff()
+        staff1.set_name("佐藤太郎")
+        self.company.staffs.append(staff1)
+        
+        staff2 = Staff()
+        staff2.set_name("鈴木次郎")
+        self.company.staffs.append(staff2)
+        
+        # 解雇前の確認
+        # 【期待値】2人いるはず
+        self.assertEqual(len(self.company.staffs), 2)
+        
+        # 標準出力をキャプチャ（デコレータの出力を抑制）
+        captured_output = StringIO()
+        sys.stdout = captured_output
+        
+        # 解雇実行
+        self.company.set_dismissal_procedure("佐藤太郎")
+        
+        # 標準出力を復元
+        sys.stdout = sys.__stdout__
+        
+        # 解雇後の確認
+        # 【期待値】1人になっているはず
+        self.assertEqual(len(self.company.staffs), 1)
+        
+        # 【期待値】残っているのは鈴木次郎さんのはず
+        self.assertEqual(self.company.staffs[0].get_name(), "鈴木次郎")
+        
+        # 成功メッセージ
+        print("✓ 解雇手続きテスト成功")
+    
+    # テストメソッド8：解雇手続きメソッドのデコレータテスト
+    def test_set_dismissal_procedure_decorator(self):
+        """
+        解雇手続きメソッドのデコレータテスト
+        
+        【このテストの目的】
+        デコレータが正しく動作して、社員数が表示されるか確認
+        """
+        # 社員を3人追加
+        staff1 = Staff()
+        staff1.set_name("佐藤太郎")
+        self.company.staffs.append(staff1)
+        
+        staff2 = Staff()
+        staff2.set_name("鈴木次郎")
+        self.company.staffs.append(staff2)
+        
+        staff3 = Staff()
+        staff3.set_name("田中花子")
+        self.company.staffs.append(staff3)
+        
+        # 標準出力をキャプチャ（今回は内容を確認する）
+        captured_output = StringIO()
+        sys.stdout = captured_output
+        
+        # 解雇実行
+        self.company.set_dismissal_procedure("鈴木次郎")
+        
+        # 出力内容を取得
+        # getvalue()：StringIOに保存された文字列を取得
+        output = captured_output.getvalue()
+        
+        # 標準出力を復元
+        sys.stdout = sys.__stdout__
+        
+        # デコレータのメッセージが含まれているか確認
+        # assertIn(部分文字列, 文字列)：部分文字列が含まれているか確認
+        self.assertIn("現在わが社の社員数は", output)
+        
+        # 社員数が正しく表示されているか確認
+        # 解雇後：社員2人 + 社長1人 = 3人
+        self.assertIn("3人になっています", output)
+        
+        # 成功メッセージ
+        print("✓ デコレータ機能テスト成功")
+    
+    # テストメソッド9：社長の設定テスト
+    def test_ceo_configuration(self):
+        """
+        社長の設定テスト
+        
+        【このテストの目的】
+        社長の情報を設定・取得できるか確認
+        """
+        # 社長の名前を設定
+        self.company.ceo.set_name("偉井杉人")
+        
+        # 社長の給料を設定
+        self.company.ceo.set_salary(2500000)
+        
+        # 名前の確認（"社長"が追加されているはず）
+        # 【期待値】"偉井杉人社長"
+        self.assertEqual(self.company.ceo.get_name(), "偉井杉人社長")
+        
+        # 給料の確認
+        # 【期待値】2500000
+        self.assertEqual(self.company.ceo.get_salary(), 2500000)
+        
+        # 成功メッセージ
+        print("✓ 社長設定テスト成功")
+
+
+# このファイルが直接実行された場合
+if __name__ == "__main__":
+    # 区切り線を表示
+    print("=" * 60)
+    print("Companyクラス テスト実行")
+    print("=" * 60)
+    
+    # すべてのテストを実行
+    unittest.main(verbosity=2)
+
+
+# 【実行方法】
+# python test_company.py
+#
+# 【このテストファイルの重要ポイント】
+#
+# 1. プロパティのテスト：
+#    - company.staffs（()なし）でリストを取得
+#    - company.ceo（()なし）で社長を取得
+#    - プロパティは属性のように使える
+#
+# 2. デコレータのテスト：
+#    - set_dismissal_procedure()実行後
+#    - 自動的に社員数が表示される
+#    - StringIOで出力内容を確認
+#
+# 3. リスト操作：
+#    - append()で追加
+#    - len()で要素数確認
+#    - [インデックス]で要素取得
+#    - enumerate()でインデックスと要素を同時取得
+#
+# 4. ループ処理：
+#    - for i in range(5)：5回繰り返し
+#    - f"社員{i+1}"：動的な文字列生ーーーーーーーーーーーー
+
+ーーーーーーーーーーー
+
+"""
+run_all_tests.py
+すべてのテストファイルをまとめて実行するスクリプト
+
+【このファイルの役割】
+5つのテストファイル（test_*.py）をまとめて実行し、
+結果をわかりやすく表示します。
+
+【便利な点】
+- 各テストファイルを個別に実行する必要がない
+- すべてのテスト結果を一度に確認できる
+- 成功/失敗の統計が見られる
+"""
+
+# 必要なモジュールをインポート
+import unittest  # テストフレームワーク
+import sys       # プログラムの終了コードを設定するため
+
+
+# すべてのテストを実行する関数
+def run_all_tests():
+    """
+    すべてのテストを実行
+    
+    【この関数の処理の流れ】
+    1. テストファイルの一覧を表示
+    2. 各テストファイルからテストケースを読み込み
+    3. すべてのテストを実行
+    4. 結果サマリーを表示
+    
+    Returns:
+        bool: すべてのテストが成功したらTrue、失敗があればFalse
+    """
+    
+    # ステップ1：開始メッセージを表示
+    # ============================================================
+    # "=" * 70：「=」を70個並べた文字列を作る
+    # 例："=" * 3 → "==="
+    print("=" * 70)
+    print("社員管理システム - 全テスト実行")
+    print("=" * 70)
+    
+    # 実行するテストファイルの一覧を表示
+    print("\n実行するテストファイル:")
+    print("  1. test_employee.py    - Employeeクラステスト")
+    print("  2. test_staff.py       - Staffクラステスト")
+    print("  3. test_president.py   - Presidentクラステスト")
+    print("  4. test_company.py     - Companyクラステスト")
+    print("  5. test_integration.py - 統合テスト")
+    print("=" * 70)
+    print()  # 空行を表示
+    
+    # ステップ2：テストスイートを準備
+    # ============================================================
+    # TestLoader：テストケースを読み込むためのオブジェクト
+    loader = unittest.TestLoader()
+    
+    # TestSuite：複数のテストケースをまとめるコンテナ
+    # これに各テストファイルのテストを追加していきます
+    suite = unittest.TestSuite()
+    
+    # ステップ3：各テストファイルを読み込み
+    # ============================================================
+    # try-except：エラーが発生しても処理を続けるための構文
+    # 【try-exceptの仕組み】
+    # try:
+    #     実行したいコード
+    # except エラーの種類 as 変数名:
+    #     エラーが発生した時の処理
+    
+    # テストファイル1：test_employee.py
+    try:
+        # test_employee.py から TestEmployee クラスをインポート
+        from test_employee import TestEmployee
+        
+        # TestEmployeeクラスのすべてのテストメソッドを読み込み
+        # loadTestsFromTestCase()：クラスからテストを読み込むメソッド
+        suite.addTests(loader.loadTestsFromTestCase(TestEmployee))
+        
+        # 成功メッセージ
+        print("✓ test_employee.py を読み込みました")
+    
+    # ImportError：インポートに失敗した時のエラー
+    except ImportError as e:
+        # as e：エラー情報を変数 e に保存
+        # f-string で エラー情報を表示
+        print(f"✗ test_employee.py の読み込みに失敗: {e}")
+    
+    # テストファイル2：test_staff.py
+    try:
+        from test_staff import TestStaff
+        suite.addTests(loader.loadTestsFromTestCase(TestStaff))
+        print("✓ test_staff.py を読み込みました")
+    except ImportError as e:
+        print(f"✗ test_staff.py の読み込みに失敗: {e}")
+    
+    # テストファイル3：test_president.py
+    try:
+        from test_president import TestPresident
+        suite.addTests(loader.loadTestsFromTestCase(TestPresident))
+        print("✓ test_president.py を読み込みました")
+    except ImportError as e:
+        print(f"✗ test_president.py の読み込みに失敗: {e}")
+    
+    # テストファイル4：test_company.py
+    try:
+        from test_company import TestCompany
+        suite.addTests(loader.loadTestsFromTestCase(TestCompany))
+        print("✓ test_company.py を読み込みました")
+    except ImportError as e:
+        print(f"✗ test_company.py の読み込みに失敗: {e}")
+    
+    # テストファイル5：test_integration.py
+    try:
+        from test_integration import TestIntegration
+        suite.addTests(loader.loadTestsFromTestCase(TestIntegration))
+        print("✓ test_integration.py を読み込みました")
+    except ImportError as e:
+        print(f"✗ test_integration.py の読み込みに失敗: {e}")
+    
+    # ステップ4：テスト実行開始の表示
+    # ============================================================
+    print()  # 空行
+    print("=" * 70)
+    print("テスト実行開始")
+    print("=" * 70)
+    print()
+    
+    # ステップ5：テスト実行
+    # ============================================================
+    # TextTestRunner：テストを実行して結果をテキスト形式で表示するオブジェクト
+    # verbosity=2：詳細モード（各テストの結果を表示）
+    runner = unittest.TextTestRunner(verbosity=2)
+    
+    # run()：テストスイートを実行
+    # 戻り値：テスト結果オブジェクト（result）
+    result = runner.run(suite)
+    
+    # ステップ6：結果サマリーを表示
+    # ============================================================
+    print("\n" + "=" * 70)
+    print("テスト結果サマリー")
+    print("=" * 70)
+    
+    # result.testsRun：実行されたテストの総数
+    print(f"実行テスト数: {result.testsRun}")
+    
+    # 成功したテスト数を計算
+    # 総数 - 失敗数 - エラー数 = 成功数
+    # len(result.failures)：失敗したテストの数
+    # len(result.errors)：エラーが発生したテストの数
+    success_count = result.testsRun - len(result.failures) - len(result.errors)
+    print(f"成功: {success_count}")
+    print(f"失敗: {len(result.failures)}")
+    print(f"エラー: {len(result.errors)}")
+    
+    # ステップ7：最終結果を判定して表示
+    # ============================================================
+    # result.wasSuccessful()：すべてのテストが成功したらTrue
+    if result.wasSuccessful():
+        # すべて成功の場合
+        print("\n🎉 すべてのテストが成功しました！")
+        print("=" * 70)
+        print("各クラスとその機能が正しく実装されています。")
+        print("=" * 70)
+    else:
+        # 失敗があった場合
+        print("\n❌ いくつかのテストが失敗しました")
+        print("=" * 70)
+        
+        # 失敗したテストがある場合、その一覧を表示
+        if result.failures:
+            print("\n失敗したテスト:")
+            # result.failures：失敗したテストのリスト
+            # 各要素は (テストオブジェクト, トレースバック) のタプル
+            for test, traceback in result.failures:
+                # テストの名前を表示
+                print(f"  - {test}")
+        
+        # エラーが発生したテストがある場合、その一覧を表示
+        if result.errors:
+            print("\nエラーが発生したテスト:")
+            # result.errors：エラーが発生したテストのリスト
+            for test, traceback in result.errors:
+                print(f"  - {test}")
+        
+        print("=" * 70)
+    
+    # すべて成功したかどうかを返す（True/False）
+    return result.wasSuccessful()
+
+
+# このファイルが直接実行された場合
+# 【__name__ == "__main__" の意味】
+# - このファイルが直接実行された場合：__name__ は "__main__"
+# - 他のファイルからインポートされた場合：__name__ はファイル名
+if __name__ == "__main__":
+    # try-except：エラーが発生しても適切に処理する
+    try:
+        # run_all_tests()を実行して、結果を success に保存
+        success = run_all_tests()
+        
+        # sys.exit()：プログラムを終了する
+        # 引数：終了コード
+        #   0：正常終了（成功）
+        #   1：異常終了（失敗）
+        # 
+        # success が True なら 0（成功）、False なら 1（失敗）を返す
+        # これは「三項演算子」の代わりに if-else を使った書き方
+        sys.exit(0 if success else 1)
+        
+        # 【上記は以下と同じ意味】
+        # if success:
+        #     sys.exit(0)  # 成功
+        # else:
+        #     sys.exit(1)  # 失敗
+    
+    # Exception：すべての例外（エラー）の基底クラス
+    # すべてのエラーをキャッチする
+    except Exception as e:
+        # エラーが発生した場合の表示
+        print("\n" + "=" * 70)
+        print("❌ テスト実行中にエラーが発生しました")
+        print("=" * 70)
+        print(f"エラー内容: {e}")
+        
+        # エラー解決のヒントを表示
+        print("\n確認事項:")
+        print("1. すべての必要なファイルが同じフォルダにあるか")
+        print("   - employee.py")
+        print("   - staff.py")
+        print("   - president.py")
+        print("   - company.py")
+        print("   - test_employee.py")
+        print("   - test_staff.py")
+        print("   - test_president.py")
+        print("   - test_company.py")
+        print("   - test_integration.py")
+        print("   - run_all_tests.py (このファイル)")
+        print("\n2. 以下のコマンドでファイルを確認:")
+        print("   dir *.py")  # Windowsの場合
+        # print("   ls *.py")  # Mac/Linuxの場合
+        print("=" * 70)
+        
+        # エラー終了コードで終了
+        sys.exit(1)
+
+
+# 【実行方法】
+# python run_all_tests.py
+#
+# 【このスクリプトの利点】
+#
+# 1. 一括実行：
+#    - 個別に5つのテストファイルを実行する必要がない
+#    - 1つのコマンドですべてのテストを実行
+#
+# 2. わかりやすい結果表示：
+#    - どのテストファイルが読み込まれたか
+#    - 何個のテストが実行されたか
+#    - 成功/失敗/エラーの数
+#
+# 3. エラー処理：
+#    - ファイルが見つからない場合も適切に処理
+#    - エラー内容とヒントを表示
+#
+# 4. 終了コード：
+#    - 成功時：0（他のスクリプトから結果を判定できる）
+#    - 失敗時：1
+#
+# 【終了コードの使い方（高度）】
+# コマンドライン（ターミナル）で：
+# 
+# Windows:
+#   python run_all_tests.py
+#   echo %errorlevel%  # 終了コードを表示（0なら成功）
+#
+# Mac/Linux:
+#   python run_all_tests.py
+#   echo $?  # 終了コードを表示（0なら成功）
+#
+# 【三項演算子の復習】
+# 0 if success else 1
+#
+# 読み方：
+# 「successがTrueなら0、そうでなければ1」
+#
+# 従来の書き方：
+# if success:
+#     code = 0
+# else:
+#     code = 1
+# sys.exit(code)
+
+ーーーーーーーーーーーーーー
+"""
+run_all_tests.py
+すべてのテストファイルをまとめて実行するスクリプト
+
+【このファイルの役割】
+5つのテストファイル（test_*.py）をまとめて実行し、
+結果をわかりやすく表示します。
+
+【便利な点】
+- 各テストファイルを個別に実行する必要がない
+- すべてのテスト結果を一度に確認できる
+- 成功/失敗の統計が見られる
+"""
+
+# 必要なモジュールをインポート
+import unittest  # テストフレームワーク
+import sys       # プログラムの終了コードを設定するため
+
+
+# すべてのテストを実行する関数
+def run_all_tests():
+    """
+    すべてのテストを実行
+    
+    【この関数の処理の流れ】
+    1. テストファイルの一覧を表示
+    2. 各テストファイルからテストケースを読み込み
+    3. すべてのテストを実行
+    4. 結果サマリーを表示
+    
+    Returns:
+        bool: すべてのテストが成功したらTrue、失敗があればFalse
+    """
+    
+    # ステップ1：開始メッセージを表示
+    # ============================================================
+    # "=" * 70：「=」を70個並べた文字列を作る
+    # 例："=" * 3 → "==="
+    print("=" * 70)
+    print("社員管理システム - 全テスト実行")
+    print("=" * 70)
+    
+    # 実行するテストファイルの一覧を表示
+    print("\n実行するテストファイル:")
+    print("  1. test_employee.py    - Employeeクラステスト")
+    print("  2. test_staff.py       - Staffクラステスト")
+    print("  3. test_president.py   - Presidentクラステスト")
+    print("  4. test_company.py     - Companyクラステスト")
+    print("  5. test_integration.py - 統合テスト")
+    print("=" * 70)
+    print()  # 空行を表示
+    
+    # ステップ2：テストスイートを準備
+    # ============================================================
+    # TestLoader：テストケースを読み込むためのオブジェクト
+    loader = unittest.TestLoader()
+    
+    # TestSuite：複数のテストケースをまとめるコンテナ
+    # これに各テストファイルのテストを追加していきます
+    suite = unittest.TestSuite()
+    
+    # ステップ3：各テストファイルを読み込み
+    # ============================================================
+    # try-except：エラーが発生しても処理を続けるための構文
+    # 【try-exceptの仕組み】
+    # try:
+    #     実行したいコード
+    # except エラーの種類 as 変数名:
+    #     エラーが発生した時の処理
+    
+    # テストファイル1：test_employee.py
+    try:
+        # test_employee.py から TestEmployee クラスをインポート
+        from test_employee import TestEmployee
+        
+        # TestEmployeeクラスのすべてのテストメソッドを読み込み
+        # loadTestsFromTestCase()：クラスからテストを読み込むメソッド
+        suite.addTests(loader.loadTestsFromTestCase(TestEmployee))
+        
+        # 成功メッセージ
+        print("✓ test_employee.py を読み込みました")
+    
+    # ImportError：インポートに失敗した時のエラー
+    except ImportError as e:
+        # as e：エラー情報を変数 e に保存
+        # f-string で エラー情報を表示
+        print(f"✗ test_employee.py の読み込みに失敗: {e}")
+    
+    # テストファイル2：test_staff.py
+    try:
+        from test_staff import TestStaff
+        suite.addTests(loader.loadTestsFromTestCase(TestStaff))
+        print("✓ test_staff.py を読み込みました")
+    except ImportError as e:
+        print(f"✗ test_staff.py の読み込みに失敗: {e}")
+    
+    # テストファイル3：test_president.py
+    try:
+        from test_president import TestPresident
+        suite.addTests(loader.loadTestsFromTestCase(TestPresident))
+        print("✓ test_president.py を読み込みました")
+    except ImportError as e:
+        print(f"✗ test_president.py の読み込みに失敗: {e}")
+    
+    # テストファイル4：test_company.py
+    try:
+        from test_company import TestCompany
+        suite.addTests(loader.loadTestsFromTestCase(TestCompany))
+        print("✓ test_company.py を読み込みました")
+    except ImportError as e:
+        print(f"✗ test_company.py の読み込みに失敗: {e}")
+    
+    # テストファイル5：test_integration.py
+    try:
+        from test_integration import TestIntegration
+        suite.addTests(loader.loadTestsFromTestCase(TestIntegration))
+        print("✓ test_integration.py を読み込みました")
+    except ImportError as e:
+        print(f"✗ test_integration.py の読み込みに失敗: {e}")
+    
+    # ステップ4：テスト実行開始の表示
+    # ============================================================
+    print()  # 空行
+    print("=" * 70)
+    print("テスト実行開始")
+    print("=" * 70)
+    print()
+    
+    # ステップ5：テスト実行
+    # ============================================================
+    # TextTestRunner：テストを実行して結果をテキスト形式で表示するオブジェクト
+    # verbosity=2：詳細モード（各テストの結果を表示）
+    runner = unittest.TextTestRunner(verbosity=2)
+    
+    # run()：テストスイートを実行
+    # 戻り値：テスト結果オブジェクト（result）
+    result = runner.run(suite)
+    
+    # ステップ6：結果サマリーを表示
+    # ============================================================
+    print("\n" + "=" * 70)
+    print("テスト結果サマリー")
+    print("=" * 70)
+    
+    # result.testsRun：実行されたテストの総数
+    print(f"実行テスト数: {result.testsRun}")
+    
+    # 成功したテスト数を計算
+    # 総数 - 失敗数 - エラー数 = 成功数
+    # len(result.failures)：失敗したテストの数
+    # len(result.errors)：エラーが発生したテストの数
+    success_count = result.testsRun - len(result.failures) - len(result.errors)
+    print(f"成功: {success_count}")
+    print(f"失敗: {len(result.failures)}")
+    print(f"エラー: {len(result.errors)}")
+    
+    # ステップ7：最終結果を判定して表示
+    # ============================================================
+    # result.wasSuccessful()：すべてのテストが成功したらTrue
+    if result.wasSuccessful():
+        # すべて成功の場合
+        print("\n🎉 すべてのテストが成功しました！")
+        print("=" * 70)
+        print("各クラスとその機能が正しく実装されています。")
+        print("=" * 70)
+    else:
+        # 失敗があった場合
+        print("\n❌ いくつかのテストが失敗しました")
+        print("=" * 70)
+        
+        # 失敗したテストがある場合、その一覧を表示
+        if result.failures:
+            print("\n失敗したテスト:")
+            # result.failures：失敗したテストのリスト
+            # 各要素は (テストオブジェクト, トレースバック) のタプル
+            for test, traceback in result.failures:
+                # テストの名前を表示
+                print(f"  - {test}")
+        
+        # エラーが発生したテストがある場合、その一覧を表示
+        if result.errors:
+            print("\nエラーが発生したテスト:")
+            # result.errors：エラーが発生したテストのリスト
+            for test, traceback in result.errors:
+                print(f"  - {test}")
+        
+        print("=" * 70)
+    
+    # すべて成功したかどうかを返す（True/False）
+    return result.wasSuccessful()
+
+
+# このファイルが直接実行された場合
+# 【__name__ == "__main__" の意味】
+# - このファイルが直接実行された場合：__name__ は "__main__"
+# - 他のファイルからインポートされた場合：__name__ はファイル名
+if __name__ == "__main__":
+    # try-except：エラーが発生しても適切に処理する
+    try:
+        # run_all_tests()を実行して、結果を success に保存
+        success = run_all_tests()
+        
+        # sys.exit()：プログラムを終了する
+        # 引数：終了コード
+        #   0：正常終了（成功）
+        #   1：異常終了（失敗）
+        # 
+        # success が True なら 0（成功）、False なら 1（失敗）を返す
+        # これは「三項演算子」の代わりに if-else を使った書き方
+        sys.exit(0 if success else 1)
+        
+        # 【上記は以下と同じ意味】
+        # if success:
+        #     sys.exit(0)  # 成功
+        # else:
+        #     sys.exit(1)  # 失敗
+    
+    # Exception：すべての例外（エラー）の基底クラス
+    # すべてのエラーをキャッチする
+    except Exception as e:
+        # エラーが発生した場合の表示
+        print("\n" + "=" * 70)
+        print("❌ テスト実行中にエラーが発生しました")
+        print("=" * 70)
+        print(f"エラー内容: {e}")
+        
+        # エラー解決のヒントを表示
+        print("\n確認事項:")
+        print("1. すべての必要なファイルが同じフォルダにあるか")
+        print("   - employee.py")
+        print("   - staff.py")
+        print("   - president.py")
+        print("   - company.py")
+        print("   - test_employee.py")
+        print("   - test_staff.py")
+        print("   - test_president.py")
+        print("   - test_company.py")
+        print("   - test_integration.py")
+        print("   - run_all_tests.py (このファイル)")
+        print("\n2. 以下のコマンドでファイルを確認:")
+        print("   dir *.py")  # Windowsの場合
+        # print("   ls *.py")  # Mac/Linuxの場合
+        print("=" * 70)
+        
+        # エラー終了コードで終了
+        sys.exit(1)
+
+
+# 【実行方法】
+# python run_all_tests.py
+#
+# 【このスクリプトの利点】
+#
+# 1. 一括実行：
+#    - 個別に5つのテストファイルを実行する必要がない
+#    - 1つのコマンドですべてのテストを実行
+#
+# 2. わかりやすい結果表示：
+#    - どのテストファイルが読み込まれたか
+#    - 何個のテストが実行されたか
+#    - 成功/失敗/エラーの数
+#
+# 3. エラー処理：
+#    - ファイルが見つからない場合も適切に処理
+#    - エラー内容とヒントを表示
+#
+# 4. 終了コード：
+#    - 成功時：0（他のスクリプトから結果を判定できる）
+#    - 失敗時：1
+#
+# 【終了コードの使い方（高度）】
+# コマンドライン（ターミナル）で：
+# 
+# Windows:
+#   python run_all_tests.py
+#   echo %errorlevel%  # 終了コードを表示（0なら成功）
+#
+# Mac/Linux:
+#   python run_all_tests.py
+#   echo $?  # 終了コードを表示（0なら成功）
+#
+# 【三項演算子の復習】
+# 0 if success else 1
+#
+# 読み方：
+# 「successがTrueなら0、そうでなければ1」
+#
+# 従来の書き方：
+# if success:
+#     code = 0
+# else:
+#     code = 1
+# sys.exit(code)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾＾
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
