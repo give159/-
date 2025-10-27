@@ -1,0 +1,161 @@
+"""
+===============================================
+ステップバイステップ実装ガイド
+===============================================
+
+このファイルには各ステップのコードが順番に書かれています。
+各ステップごとにコピーして、別ファイルに貼り付けて実行してください。
+
+【学習の流れ】
+ステップ1: 基礎を学ぶ → 変数、関数、クラス
+ステップ2: employee.py を作る
+ステップ3: staff.py を作る（継承を学ぶ）
+ステップ4: president.py を作る（オーバーライドを学ぶ）
+ステップ5: company.py を作る（プロパティ、デコレータを学ぶ）
+ステップ6: main.py を作る（実行する）
+ステップ7: テストを作る
+"""
+
+
+# ===============================================
+# ステップ1: Python基礎の復習
+# ===============================================
+"""
+【このステップで学ぶこと】
+- 変数と型
+- 関数の定義
+- クラスの基礎
+"""
+
+# --- 変数と型 ---
+print("=== ステップ1: 基礎の復習 ===\n")
+
+# 基本的な変数
+name = "太郎"
+age = 25
+salary = 300000
+
+print(f"名前: {name}")
+print(f"年齢: {age}")
+print(f"給料: {salary}")
+
+
+# --- 関数の定義 ---
+def greet(name: str) -> str:
+    """挨拶を返す関数"""
+    return f"こんにちは、{name}さん！"
+
+
+message = greet("太郎")
+print(f"\n{message}")
+
+
+# --- 簡単なクラス ---
+class Person:
+    """人間クラス（練習用）"""
+    
+    def __init__(self, name: str):
+        """コンストラクタ"""
+        self.name = name
+    
+    def introduce(self):
+        """自己紹介"""
+        return f"私は{self.name}です"
+
+
+# クラスを使ってみる
+person = Person("太郎")
+print(f"\n{person.introduce()}")
+
+print("\n" + "=" * 50 + "\n")
+
+
+# ===============================================
+# ステップ2: employee.py（基底クラス）
+# ===============================================
+"""
+【このステップで学ぶこと】
+- クラスの定義
+- コンストラクタ（__init__）
+- メソッドの定義
+- デストラクタ（__del__）
+- Docstring（ドキュメント）
+"""
+
+print("=== ステップ2: Employeeクラスを作る ===\n")
+
+
+class Employee:
+    """
+    社員の基底クラス
+    
+    Attributes:
+        _name (str): 社員の名前
+        _salary (int): 社員の給料
+    """
+    
+    def __init__(self):
+        """
+        コンストラクタ
+        インスタンス作成時に自動実行される
+        """
+        self._name: str = ""
+        self._salary: int = 0
+        print(f"[作成] Employeeインスタンスを作成しました")
+    
+    def get_name(self) -> str:
+        """名前を取得"""
+        return self._name
+    
+    def set_name(self, emp_name: str) -> None:
+        """名前を設定"""
+        self._name = emp_name
+    
+    def get_salary(self) -> int:
+        """給料を取得"""
+        return self._salary
+    
+    def set_salary(self, emp_salary: int) -> None:
+        """給料を設定"""
+        self._salary = emp_salary
+    
+    def __del__(self):
+        """
+        デストラクタ
+        インスタンス削除時に自動実行される
+        """
+        print(f"[削除] Employee '{self._name}' を削除しました")
+
+
+# 実際に使ってみる
+print("【Employeeクラスのテスト】")
+emp = Employee()
+emp.set_name("山田太郎")
+emp.set_salary(300000)
+
+print(f"名前: {emp.get_name()}")
+print(f"給料: {emp.get_salary()}円")
+
+print("\n" + "=" * 50 + "\n")
+
+
+# ===============================================
+# ステップ3: staff.py（継承）
+# ===============================================
+"""
+【このステップで学ぶこと】
+- 継承の方法
+- super()の使い方
+- 親クラスの機能を使う
+"""
+
+print("=== ステップ3: Staffクラスを作る（継承） ===\n")
+
+
+class Staff(Employee):  # ← Employee を継承
+    """
+    一般社員クラス
+    
+    Employeeを継承し、部署情報を追加
+    
+    Attributes:
